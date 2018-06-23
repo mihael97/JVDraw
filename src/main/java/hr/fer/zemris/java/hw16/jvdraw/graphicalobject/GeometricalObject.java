@@ -25,4 +25,15 @@ public abstract class GeometricalObject {
 	 * @return {@link GeometricalObjectEditor}
 	 */
 	public abstract GeometricalObjectEditor createGeometricalObjectEditor();
+
+	/**
+	 * Method adds geometricalObjectListener into listeners list
+	 * @param l - listener we want to add
+	 */
+	public abstract void addGeometricalObjectListener(GeometricalObjectListener l);
+
+	/**
+	 * @param l
+	 */
+	public abstract void removeGeometricalObjectListener(GeometricalObjectListener l);
 }

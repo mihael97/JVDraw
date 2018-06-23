@@ -18,11 +18,11 @@ public class DrawingModelImplementation implements DrawingModel {
 	/**
 	 * List of stored objects
 	 */
-	List<GeometricalObject> objects;
+	private List<GeometricalObject> objects;
 	/**
 	 * List of drawing model listeners
 	 */
-	List<DrawingModelListener> listeners;
+	private List<DrawingModelListener> listeners;
 
 	/**
 	 * (non-Javadoc)
@@ -52,6 +52,8 @@ public class DrawingModelImplementation implements DrawingModel {
 	@Override
 	public void add(GeometricalObject object) {
 		objects.add(Objects.requireNonNull(object, "Geometrical object cannot be null!"));
+		objects.get(objects.size()-1).
+		listeners.forEach(e -> e.objectsAdded(this, objects.size() - 1, objects.size() - 1));
 	}
 
 	/**

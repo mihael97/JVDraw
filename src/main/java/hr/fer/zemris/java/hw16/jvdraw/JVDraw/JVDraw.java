@@ -4,6 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridLayout;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -11,9 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.AbstractButton;
-import javax.swing.Action;
 import javax.swing.ButtonGroup;
-import javax.swing.JColorChooser;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JMenu;
@@ -33,12 +34,25 @@ import hr.fer.zemris.java.hw16.jvdraw.drawing.interfaces.DrawingModel;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.GeometricalObject;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.editors.GeometricalObjectEditor;
 
+/**
+ * Class represents main class where graphical interface initialized
+ * 
+ * @author Mihael
+ *
+ */
 public class JVDraw extends JFrame {
+	/**
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * Reference to drawing model
 	 */
 	private DrawingModel model;
 
+	/**
+	 * Constructor creates new JVDraw
+	 */
 	public JVDraw() {
 		this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		model = new DrawingModelImplementation();
@@ -59,14 +73,56 @@ public class JVDraw extends JFrame {
 		this.add(new JScrollPane(createList()), BorderLayout.LINE_END);
 	}
 
+	/**
+	 * Method creates {@link JList} with {@link GeometricalObject}s
+	 * 
+	 * @return {@link JList}
+	 */
 	private Component createList() {
 		JList<GeometricalObject> list = new JList<>(new DrawingObjectListModel(model));
 
 		list.addMouseListener(addDoubleClickListener());
+		list.addKeyListener(addKeyListener());
 
 		return list;
 	}
 
+	/**
+	 * Method adds key listener. Key are: <br>
+	 * <ol>
+	 * <li>delete button - deletes item from list</li>
+	 * <li>plus button - changes item priority to higher</li>
+	 * <li>delete button - changes item priority to lower</li>
+	 * </ol>
+	 * 
+	 * @return
+	 */
+	private KeyListener addKeyListener() {
+		return new KeyAdapter() {
+
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+				int keyCode = arg0.getKeyCode();
+
+				if (keyCode == KeyEvent.VK_DELETE) {
+
+				} else if (keyCode == KeyEvent.VK_PLUS) {
+
+				} else if (keyCode == KeyEvent.VK_MINUS) {
+
+				}
+
+			}
+
+		};
+	}
+
+	/**
+	 * Method returns mouse listener which shows dialog after double click on list
+	 * item
+	 * 
+	 * @return mouse listener
+	 */
 	private MouseListener addDoubleClickListener() {
 		return new MouseAdapter() {
 
@@ -94,6 +150,11 @@ public class JVDraw extends JFrame {
 		};
 	}
 
+	/**
+	 * Method returns {@link ColorLabel} for bottom of frame
+	 * 
+	 * @return {@link ColorLabel}
+	 */
 	private Component setItems() {
 		JColorArea fgColorArea = new JColorArea(Color.RED);
 		JColorArea bgColorArea = new JColorArea(Color.BLUE);
@@ -103,6 +164,15 @@ public class JVDraw extends JFrame {
 		return new ColorLabel(fgColorArea, bgColorArea);
 	}
 
+	/**
+	 * Method creates {@link JPanel} for top side of out frame
+	 * 
+	 * @param fgColorArea
+	 *            - {@link JColorArea}
+	 * @param bgColorArea
+	 *            - {@link JColorArea}
+	 * @return {@link JPanel} with components for top frame
+	 */
 	private JPanel createPanel(JColorArea fgColorArea, JColorArea bgColorArea) {
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(2, 1));
@@ -125,6 +195,11 @@ public class JVDraw extends JFrame {
 		return panel;
 	}
 
+	/**
+	 * Method creates {@link JToggleButton}s for line,circle and filled circle
+	 * 
+	 * @return List of {@link JToggleButton}
+	 */
 	private List<AbstractButton> makeButtons() {
 		List<AbstractButton> list = new ArrayList<>();
 
@@ -139,6 +214,12 @@ public class JVDraw extends JFrame {
 		return list;
 	}
 
+	/**
+	 * Main program
+	 * 
+	 * @param args
+	 *            - not in use
+	 */
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(() -> {
 			new JVDraw().setVisible(true);
