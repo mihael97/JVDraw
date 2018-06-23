@@ -16,8 +16,7 @@ public class JDrawingCanvas extends JComponent implements DrawingModelListener {
 	 */
 	@Override
 	public void objectsAdded(DrawingModel source, int index0, int index1) {
-		// TODO Auto-generated method stub
-
+		model.add(source.getObject(index0));
 	}
 
 	/**
@@ -28,8 +27,7 @@ public class JDrawingCanvas extends JComponent implements DrawingModelListener {
 	 */
 	@Override
 	public void objectsRemoved(DrawingModel source, int index0, int index1) {
-		// TODO Auto-generated method stub
-
+		repaint();
 	}
 
 	/**
@@ -40,8 +38,7 @@ public class JDrawingCanvas extends JComponent implements DrawingModelListener {
 	 */
 	@Override
 	public void objectsChanged(DrawingModel source, int index0, int index1) {
-		// TODO Auto-generated method stub
-
+		repaint();
 	}
 
 }

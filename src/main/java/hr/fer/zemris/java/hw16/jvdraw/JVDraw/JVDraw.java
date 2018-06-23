@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +17,7 @@ import javax.swing.JColorChooser;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JMenu;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JToggleButton;
@@ -28,6 +31,7 @@ import hr.fer.zemris.java.hw16.jvdraw.drawing.DrawingModelImplementation;
 import hr.fer.zemris.java.hw16.jvdraw.drawing.DrawingObjectListModel;
 import hr.fer.zemris.java.hw16.jvdraw.drawing.interfaces.DrawingModel;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.GeometricalObject;
+import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.editors.GeometricalObjectEditor;
 
 public class JVDraw extends JFrame {
 	/**
@@ -59,13 +63,35 @@ public class JVDraw extends JFrame {
 		JList<GeometricalObject> list = new JList<>(new DrawingObjectListModel(model));
 
 		list.addMouseListener(addDoubleClickListener());
-		
+
 		return list;
 	}
 
 	private MouseListener addDoubleClickListener() {
-		// TODO Auto-generated method stub
-		return null;
+		return new MouseAdapter() {
+
+			@Override
+			public void mouseClicked(MouseEvent event) {
+				if (event.getClickCount() != 2) {
+					return;
+				}
+
+				@SuppressWarnings("unchecked")
+				JList<GeometricalObject> list = (JList<GeometricalObject>) event.getSource();
+				GeometricalObject clicked = list.getSelectedValue();
+				GeometricalObjectEditor editor = clicked.createGeometricalObjectEditor();
+				if (JOptionPane.showConfirmDialog(JVDraw.this, editor, "Edit",
+						JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
+					try {
+						editor.checkEditing();
+						editor.acceptEditing();
+					} catch (Exception ex) {
+
+					}
+				}
+			}
+
+		};
 	}
 
 	private Component setItems() {
