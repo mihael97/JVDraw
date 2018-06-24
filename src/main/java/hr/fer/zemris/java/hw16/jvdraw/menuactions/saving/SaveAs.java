@@ -1,4 +1,4 @@
-package hr.fer.zemris.java.hw16.jvdraw.menuactions;
+package hr.fer.zemris.java.hw16.jvdraw.menuactions.saving;
 
 import java.awt.Color;
 import java.awt.Point;
@@ -27,41 +27,16 @@ public class SaveAs extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		JFileChooser cf = new JFileChooser();
-		cf.setDialogTitle("Select location: ");
-
-		if (cf.showSaveDialog(null) != JFileChooser.APPROVE_OPTION) {
-			return;
-		}
-
-		Path path = cf.getSelectedFile().toPath();
-
-		if (path.toFile().exists()) {
-			int response = JOptionPane.showConfirmDialog(null, "File already exists. Do you want overwrite it?",
-					"Warning", JOptionPane.YES_NO_OPTION);
-
-			if (response == JOptionPane.CANCEL_OPTION || response == JOptionPane.NO_OPTION) {
-				return;
-			}
-		}
-
+		Path path = SaveUtilities.getSavingPath();
 		StringBuilder builder = new StringBuilder();
 
 		for (int i = 0, len = model.getSize(); i < len; i++) {
 			builder.append(getText(model.getObject(i)) + "\n");
 		}
 
-		int index = (path.toString().lastIndexOf(".")) != -1 ? path.toString().lastIndexOf(".")
-				: (path.toString().length() - 1);
-
-		try {
-			Files.write(Paths.get(path.toString().substring(0, index) + ".jvd"), builder.toString().getBytes());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		SaveFile.setUnModified();
-		SaveFile.setPath(path);
+		SaveUtilities.writeData(path, builder.toString());
+		SaveFileInfo.setUnModified();
+		SaveFileInfo.setPath(path);
 	}
 
 	private String getText(GeometricalObject object) {

@@ -1,8 +1,5 @@
 package hr.fer.zemris.java.hw16.jvdraw.graphicalobject.editors;
 
-import java.awt.TextField;
-
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -66,49 +63,15 @@ public abstract class Util {
 	}
 
 	/**
-	 * Method adds {@link JTextField} into panel. <br>
-	 * Argument b shows how many {@link JTextField} we want to add. If we want add
-	 * <code>3</code> fields,argument will be <code>true</code>. Otherwise if we
-	 * want to add <code>2</code> fields,value will be <code>false</code>
+	 * Method creates {@link JTextField} with given text
 	 * 
-	 * @param mainPanel
-	 *            - panel where we put fields
-	 * @param b
-	 *            - boolean argument which shows how many fields we want add
+	 * @param text
+	 *            - text
+	 * @return {@link JTextField}
 	 */
-	public static void addPanels(JPanel mainPanel, boolean b) {
-		JPanel panel = new JPanel();
-		mainPanel.add(panel);
-		panel.add(new TextField(3));
-		panel.add(new TextField(3));
-		if (b == true) {
-			panel.add(new TextField(3));
-		}
-	}
-
-	/**
-	 * Method adds on panel form for point editing<br>
-	 * For every <code>point form </code>we must have two {@link JTextField}
-	 * 
-	 * @param mainPanel
-	 *            - panel where we put our label and fields
-	 * @param string
-	 *            - appropriate message,text of label
-	 */
-	public static void addPoint(JPanel mainPanel, String string) {
-		mainPanel.add(new JLabel(string));
-		addPanels(mainPanel, false);
-	}
-
-	/**
-	 * Method adds on panel form for radius editing<br>
-	 * For every <code>radius form </code>we must have one {@link JTextField}
-	 * 
-	 * @param panel
-	 *            - panel where we put our label and fields
-	 */
-	public static void addRadius(JPanel panel) {
-		panel.add(new JLabel("Radius: "));
-		panel.add(new JTextField(5));
+	public static JTextField makeField(String text) {
+		JTextField field = new JTextField(3);
+		field.setText(text);
+		return field;
 	}
 }

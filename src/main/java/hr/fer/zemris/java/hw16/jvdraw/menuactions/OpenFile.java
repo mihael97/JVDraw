@@ -17,6 +17,7 @@ import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.GeometricalObject;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.components.Circle;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.components.FilledCircle;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.components.Line;
+import hr.fer.zemris.java.hw16.jvdraw.menuactions.saving.SaveFileInfo;
 
 /**
  * Action performs <code>*.jvd</code> file opening
@@ -73,8 +74,8 @@ public class OpenFile extends AbstractAction {
 			e.printStackTrace();
 		}
 
-		SaveFile.setUnModified();
-		SaveFile.setPath(path);
+		SaveFileInfo.setUnModified();
+		SaveFileInfo.setPath(path);
 	}
 
 	/**

@@ -24,7 +24,7 @@ import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.visitors.GeometricalObject
 
 public class Export extends AbstractAction {
 
-	DrawingModel model;
+	private DrawingModel model;
 
 	public Export(DrawingModel model) {
 		this.model = model;

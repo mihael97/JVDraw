@@ -9,6 +9,8 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,9 +40,10 @@ import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.components.Circle;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.components.FilledCircle;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.components.Line;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.editors.GeometricalObjectEditor;
+import hr.fer.zemris.java.hw16.jvdraw.menuactions.Exit;
 import hr.fer.zemris.java.hw16.jvdraw.menuactions.Export;
 import hr.fer.zemris.java.hw16.jvdraw.menuactions.OpenFile;
-import hr.fer.zemris.java.hw16.jvdraw.menuactions.SaveAs;
+import hr.fer.zemris.java.hw16.jvdraw.menuactions.saving.SaveAs;
 
 /**
  * Class represents main class where graphical interface initialized
@@ -91,6 +94,14 @@ public class JVDraw extends JFrame {
 		this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		model = new DrawingModelImplementation();
 		canvas = new JDrawingCanvas(model, this);
+		this.addWindowListener(new WindowAdapter() {
+
+			@Override
+			public void windowClosing(WindowEvent arg0) {
+				new Exit().actionPerformed(null);
+			}
+
+		});
 		setTitle("JDraw");
 		setLocation(400, 200);
 		setSize(500, 500);
@@ -208,8 +219,8 @@ public class JVDraw extends JFrame {
 		JPanel panel = new JPanel();
 
 		JMenu file = new JMenu("File");
-		JMenuBar bar=new JMenuBar();
-		panel.add(bar,JPanel.LEFT_ALIGNMENT);
+		JMenuBar bar = new JMenuBar();
+		panel.add(bar, JPanel.LEFT_ALIGNMENT);
 		bar.add(file);
 
 		JMenuItem open = new JMenuItem("Open");
@@ -219,10 +230,14 @@ public class JVDraw extends JFrame {
 		JMenuItem export = new JMenuItem("Export");
 		export.addActionListener(new Export(model));
 		file.add(export);
-		
+
 		JMenuItem saveAs = new JMenuItem("Save As");
 		saveAs.addActionListener(new SaveAs(model));
 		file.add(saveAs);
+
+		JMenuItem exit = new JMenuItem("Exit");
+		exit.addActionListener(new Exit());
+		file.add(exit);
 
 		JToolBar toolBar = new JToolBar();
 		panel.add(toolBar, JToolBar.LEFT_ALIGNMENT);

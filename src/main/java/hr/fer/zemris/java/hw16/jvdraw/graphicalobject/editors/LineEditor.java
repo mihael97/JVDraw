@@ -107,11 +107,25 @@ public class LineEditor extends GeometricalObjectEditor {
 	 * Method initializes form for editing
 	 */
 	public void createEditor() {
-		this.setLayout(new GridLayout(3, 2));
-		Util.addPoint(this, "Start point: ");
-		Util.addPoint(this, "End point: ");
-		this.add(new JLabel("Color: "));
-		Util.addPanels(this, true);
+		this.setLayout(new GridLayout(3, 3));
+		this.add(new JLabel("Start:"));
+		JPanel panel = new JPanel(new GridLayout(1, 2));
+		this.add(panel);
+		panel.add(Util.makeField(String.valueOf(line.getStartPoint().x)));
+		panel.add(Util.makeField(String.valueOf(line.getStartPoint().y)));
+
+		this.add(new JLabel("End:"));
+		JPanel panel2 = new JPanel(new GridLayout(1, 2));
+		this.add(panel2);
+		panel2.add(Util.makeField(String.valueOf(line.getStartPoint().x)));
+		panel2.add(Util.makeField(String.valueOf(line.getStartPoint().y)));
+
+		this.add(new JLabel("Color"));
+		JPanel colorPanel = new JPanel(new GridLayout(1, 3));
+		this.add(colorPanel);
+		colorPanel.add(Util.makeField(String.valueOf(line.getColor().getRed())));
+		colorPanel.add(Util.makeField(String.valueOf(line.getColor().getGreen())));
+		colorPanel.add(Util.makeField(String.valueOf(line.getColor().getBlue())));
 	}
 
 }

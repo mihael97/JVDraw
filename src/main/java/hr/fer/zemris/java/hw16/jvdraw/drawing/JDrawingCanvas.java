@@ -15,7 +15,7 @@ import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.components.Circle;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.components.FilledCircle;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.components.Line;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.visitors.GeometricalObjectPainter;
-import hr.fer.zemris.java.hw16.jvdraw.menuactions.SaveFile;
+import hr.fer.zemris.java.hw16.jvdraw.menuactions.saving.SaveFileInfo;
 
 /**
  * Class represents {@link JComponent} where we draw our objects
@@ -151,7 +151,7 @@ public class JDrawingCanvas extends JComponent implements DrawingModelListener {
 	 * Method calls repaint method and sets saved status to <code>false</code>
 	 */
 	private void repaintAndModified() {
-		SaveFile.setModified();
+		SaveFileInfo.setModified();
 		repaint();
 	}
 

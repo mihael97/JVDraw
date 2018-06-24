@@ -1,10 +1,10 @@
-package hr.fer.zemris.java.hw16.jvdraw.menuactions;
+package hr.fer.zemris.java.hw16.jvdraw.menuactions.saving;
 
 import java.nio.file.Path;
 import java.util.Objects;
 
-public abstract class SaveFile {
-	private static boolean saved = false;
+public abstract class SaveFileInfo {
+	private static boolean saved = true;
 	private static Path path = null;
 
 	public static void setUnModified() {
@@ -20,7 +20,7 @@ public abstract class SaveFile {
 	}
 
 	public static void setPath(Path path) {
-		SaveFile.path = Objects.requireNonNull(path, "path cannot be null!");
+		SaveFileInfo.path = Objects.requireNonNull(path, "path cannot be null!");
 	}
 
 	public static boolean isModified() {

@@ -106,10 +106,22 @@ public class CircleEditor extends GeometricalObjectEditor {
 	 */
 	public void createEditor() {
 		this.setLayout(new GridLayout(3, 2));
-		Util.addPoint(this, "Center: ");
-		Util.addRadius(this);
-		this.add(new JLabel("Color: "));
-		Util.addPanels(this, true);
+		this.add(new JLabel("Center:"));
+		JPanel panel = new JPanel(new GridLayout(1, 2));
+		this.add(panel);
+		panel.add(Util.makeField(String.valueOf(circle.getCenter().x)));
+		panel.add(Util.makeField(String.valueOf(circle.getCenter().y)));
+
+		this.add(new JLabel("Radius:"));
+		this.add(Util.makeField(String.valueOf(circle.getRadius())));
+
+		this.add(new JLabel("Color"));
+		JPanel colorPanel = new JPanel(new GridLayout(1, 3));
+		this.add(colorPanel);
+		colorPanel.add(Util.makeField(String.valueOf(circle.getColor().getRed())));
+		colorPanel.add(Util.makeField(String.valueOf(circle.getColor().getGreen())));
+		colorPanel.add(Util.makeField(String.valueOf(circle.getColor().getBlue())));
+
 	}
 
 }
