@@ -71,11 +71,14 @@ public class FilledCircle extends Circle implements Tool {
 		v.visit(this);
 	}
 
+	/**
+	 * (non-Javadoc)
+	 * 
+	 * @see hr.fer.zemris.java.hw16.jvdraw.graphicalobject.components.Circle#createGeometricalObjectEditor()
+	 */
 	@Override
 	public GeometricalObjectEditor createGeometricalObjectEditor() {
-		FilledCircleEditor editor = new FilledCircleEditor(this);
-
-		return editor.createEditor();
+		return new FilledCircleEditor(this);
 	}
 
 }

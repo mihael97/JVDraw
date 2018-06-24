@@ -16,7 +16,18 @@ import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.components.FilledCircle;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.components.Line;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.visitors.GeometricalObjectPainter;
 
+/**
+ * Class represents {@link JComponent} where we draw our objects
+ * 
+ * @author Mihael
+ *
+ */
 public class JDrawingCanvas extends JComponent implements DrawingModelListener {
+	/**
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Reference to drawing model
 	 */
@@ -72,8 +83,10 @@ public class JDrawingCanvas extends JComponent implements DrawingModelListener {
 						firstClick = true;
 						repaint();
 					} else {
+						frame.reset();
 						firstClick = false;
-						model.add(frame.getCurrentState());
+						model.add(object);
+
 					}
 				}
 			}

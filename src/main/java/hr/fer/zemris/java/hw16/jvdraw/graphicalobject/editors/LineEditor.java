@@ -21,6 +21,7 @@ public class LineEditor extends GeometricalObjectEditor {
 
 	public LineEditor(Line line) {
 		this.line = Objects.requireNonNull(line, "Reference to line cannot be null!");
+		createEditor();
 	}
 
 	@Override
@@ -50,13 +51,12 @@ public class LineEditor extends GeometricalObjectEditor {
 		line.setEndPoint(new Point(xEnd, yEnd));
 	}
 
-	public GeometricalObjectEditor createEditor() {
+	public void createEditor() {
 		this.setLayout(new GridLayout(3, 2));
 		Util.addPoint(this, "Start point: ");
 		Util.addPoint(this, "End point: ");
 		this.add(new JLabel("Color: "));
 		Util.addPanels(this, true);
-		return this;
 	}
 
 }

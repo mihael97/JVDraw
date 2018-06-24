@@ -2,7 +2,6 @@ package hr.fer.zemris.java.hw16.jvdraw.graphicalobject.editors;
 
 import java.awt.GridLayout;
 import java.awt.Point;
-import java.awt.TextField;
 import java.util.Objects;
 
 import javax.swing.JLabel;
@@ -12,18 +11,51 @@ import javax.swing.JTextField;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.components.Circle;
 
 public class CircleEditor extends GeometricalObjectEditor {
+	/**
+	 * Reference to editor owner
+	 */
 	private Circle circle;
+	/**
+	 * X coordinate of center
+	 */
 	Integer xCenter = null;
+	/**
+	 * Y coordinate of center
+	 */
 	Integer yCenter = null;
+	/**
+	 * Circle radius
+	 */
 	Double radius = null;
+	/**
+	 * Red component of RGB
+	 */
 	Integer red = null;
+	/**
+	 * Green component of RGB
+	 */
 	Integer green = null;
+	/**
+	 * Blue component of RGB
+	 */
 	Integer blue = null;
 
+	/**
+	 * Constructor creates new parameter editor for circle
+	 * 
+	 * @param circle
+	 *            - circle we want to edit
+	 */
 	public CircleEditor(Circle circle) {
 		this.circle = Objects.requireNonNull(circle, "Reference to circle cannot be null!");
+		createEditor();
 	}
 
+	/**
+	 * (non-Javadoc)
+	 * 
+	 * @see hr.fer.zemris.java.hw16.jvdraw.graphicalobject.editors.GeometricalObjectEditor#checkEditing()
+	 */
 	@Override
 	public void checkEditing() {
 		int[] array = Util.getPoint((JPanel) this.getComponentAt(1, 2));
@@ -46,19 +78,26 @@ public class CircleEditor extends GeometricalObjectEditor {
 		}
 	}
 
+	/**
+	 * (non-Javadoc)
+	 * 
+	 * @see hr.fer.zemris.java.hw16.jvdraw.graphicalobject.editors.GeometricalObjectEditor#acceptEditing()
+	 */
 	@Override
 	public void acceptEditing() {
 		circle.setCenter(new Point(xCenter, yCenter));
 		circle.setRadius(radius);
 	}
 
-	public GeometricalObjectEditor createEditor() {
+	/**
+	 * Method initializes frame components
+	 */
+	public void createEditor() {
 		this.setLayout(new GridLayout(3, 2));
 		Util.addPoint(this, "Center: ");
 		Util.addRadius(this);
 		this.add(new JLabel("Color: "));
 		Util.addPanels(this, true);
-		return this;
 	}
 
 }

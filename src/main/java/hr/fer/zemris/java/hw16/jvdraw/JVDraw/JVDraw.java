@@ -74,6 +74,8 @@ public class JVDraw extends JFrame {
 	 */
 	private JDrawingCanvas canvas;
 
+	private ButtonGroup group;
+
 	/**
 	 * Constructor creates new JVDraw
 	 */
@@ -206,7 +208,7 @@ public class JVDraw extends JFrame {
 		toolBar.add(fgColorArea);
 		toolBar.add(bgColorArea);
 		List<AbstractButton> list = makeButtons();
-		ButtonGroup group = new ButtonGroup();
+		group = new ButtonGroup();
 		for (AbstractButton comp : list) {
 			toolBar.add(comp);
 			group.add(comp);
@@ -251,6 +253,14 @@ public class JVDraw extends JFrame {
 	 */
 	public GeometricalObject getCurrentState() {
 		return currentState;
+	}
+
+	/**
+	 * Method sets current state to <code>null</code><br>
+	 * This method is called when drawing object is finished and stored
+	 */
+	public void reset() {
+		currentState = null;
 	}
 
 	/**

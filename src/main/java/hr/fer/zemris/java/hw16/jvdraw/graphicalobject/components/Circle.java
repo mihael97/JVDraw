@@ -137,10 +137,14 @@ public class Circle extends GeometricalObject implements Tool {
 		v.visit(this);
 	}
 
+	/**
+	 * (non-Javadoc)
+	 * 
+	 * @see hr.fer.zemris.java.hw16.jvdraw.graphicalobject.GeometricalObject#createGeometricalObjectEditor()
+	 */
 	@Override
 	public GeometricalObjectEditor createGeometricalObjectEditor() {
-		CircleEditor editor = new CircleEditor(this);
-		return editor.createEditor();
+		return new CircleEditor(this);
 	}
 
 	/**

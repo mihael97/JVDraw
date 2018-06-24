@@ -4,8 +4,6 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 
-import javax.sound.midi.Synthesizer;
-
 import hr.fer.zemris.java.hw16.jvdraw.color.IColorProvider;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.GeometricalObject;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.editors.GeometricalObjectEditor;
@@ -110,7 +108,6 @@ public class Line extends GeometricalObject implements Tool {
 	@Override
 	public void paint(Graphics2D g2d) {
 		if (startPoint != null) {
-			System.out.println(colorProvider.getCurrentColor());
 			g2d.setColor(colorProvider.getCurrentColor());
 			g2d.drawLine(startPoint.x, startPoint.y, endPoint.x, endPoint.y);
 		}
@@ -133,22 +130,43 @@ public class Line extends GeometricalObject implements Tool {
 	 */
 	@Override
 	public GeometricalObjectEditor createGeometricalObjectEditor() {
-		LineEditor editor = new LineEditor(this);
-		return editor.createEditor();
+		return new LineEditor(this);
 	}
 
+	/**
+	 * Method returns line's starting point
+	 * 
+	 * @return starting point
+	 */
 	public Point getStartPoint() {
 		return startPoint;
 	}
 
+	/**
+	 * Method sets line's starting point
+	 * 
+	 * @param startPoint
+	 *            - new starting point
+	 */
 	public void setStartPoint(Point startPoint) {
 		this.startPoint = startPoint;
 	}
 
+	/**
+	 * Method returns line's ending point
+	 * 
+	 * @return starting point
+	 */
 	public Point getEndPoint() {
 		return endPoint;
 	}
 
+	/**
+	 * Method sets line's ending point
+	 * 
+	 * @param endPoint
+	 *            - new starting point
+	 */
 	public void setEndPoint(Point endPoint) {
 		this.endPoint = endPoint;
 	}

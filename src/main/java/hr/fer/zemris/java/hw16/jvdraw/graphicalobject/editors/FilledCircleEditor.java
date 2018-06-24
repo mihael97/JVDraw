@@ -24,10 +24,21 @@ public class FilledCircleEditor extends GeometricalObjectEditor {
 	private Integer greenFill;
 	private Integer blueFill;
 
+	/**
+	 * Constructor for new {@link FilledCircle} editor
+	 * 
+	 * @param circle
+	 */
 	public FilledCircleEditor(FilledCircle circle) {
 		this.circle = Objects.requireNonNull(circle, "Circle reference cannot be null!");
+		createEditor();
 	}
 
+	/**
+	 * (non-Javadoc)
+	 * 
+	 * @see hr.fer.zemris.java.hw16.jvdraw.graphicalobject.editors.GeometricalObjectEditor#checkEditing()
+	 */
 	@Override
 	public void checkEditing() {
 		int[] array = Util.getPoint((JPanel) this.getComponentAt(1, 2));
@@ -59,13 +70,21 @@ public class FilledCircleEditor extends GeometricalObjectEditor {
 		}
 	}
 
+	/**
+	 * (non-Javadoc)
+	 * 
+	 * @see hr.fer.zemris.java.hw16.jvdraw.graphicalobject.editors.GeometricalObjectEditor#acceptEditing()
+	 */
 	@Override
 	public void acceptEditing() {
 		circle.setCenter(new Point(xCenter, yCenter));
 		circle.setRadius(radius);
 	}
 
-	public GeometricalObjectEditor createEditor() {
+	/**
+	 * Method initializes form for {@link FilledCircle} parameters editing
+	 */
+	public void createEditor() {
 		this.setLayout(new GridLayout(4, 2));
 		Util.addPoint(this, "Center: ");
 		Util.addRadius(this);
@@ -73,7 +92,6 @@ public class FilledCircleEditor extends GeometricalObjectEditor {
 		Util.addPanels(this, true);
 		this.add(new JLabel("Color filling: "));
 		Util.addPanels(this, true);
-		return this;
 	}
 
 }
