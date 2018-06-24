@@ -1,9 +1,11 @@
 package hr.fer.zemris.java.hw16.jvdraw.graphicalobject.components;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 
+import hr.fer.zemris.java.hw16.jvdraw.color.ColorChangeListener;
 import hr.fer.zemris.java.hw16.jvdraw.color.IColorProvider;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.GeometricalObject;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.editors.GeometricalObjectEditor;
@@ -32,14 +34,42 @@ public class Line extends GeometricalObject implements Tool {
 	private IColorProvider colorProvider;
 
 	/**
+	 * Color for drawing
+	 */
+	private Color color;
+
+	/**
 	 * Constructor
 	 * 
-	 * @param colorProvider
-	 *            - {@link IColorProvider} which contains current selected color for
-	 *            drawing
+	 * @param yEnd
+	 *            - y coordinate of end point
+	 * @param xEnd
+	 *            - x coordinate of end point
+	 * @param yStart
+	 *            - y coordinate of start point
+	 * @param xStart
+	 *            - x coordinate of start point
 	 */
-	public Line(IColorProvider colorProvider) {
-		this.colorProvider = colorProvider;
+	public Line(int xStart, int yStart, int xEnd, int yEnd) {
+		this.startPoint = new Point(xStart, yStart);
+		this.endPoint = new Point(xEnd, yEnd);
+	}
+
+	/**
+	 * Default constructor
+	 * 
+	 * @param fgColorArea
+	 *            - {@link IColorProvider} for drawing
+	 */
+	public Line(IColorProvider fgColorArea) {
+		this.colorProvider = fgColorArea;
+		this.color = this.colorProvider.getCurrentColor();
+		this.colorProvider.addColorChangeListener(new ColorChangeListener() {
+			@Override
+			public void newColorSelected(IColorProvider source, Color oldColor, Color newColor) {
+				color = newColor;
+			}
+		});
 	}
 
 	/**
@@ -108,7 +138,7 @@ public class Line extends GeometricalObject implements Tool {
 	@Override
 	public void paint(Graphics2D g2d) {
 		if (startPoint != null) {
-			g2d.setColor(colorProvider.getCurrentColor());
+			g2d.setColor(color);
 			g2d.drawLine(startPoint.x, startPoint.y, endPoint.x, endPoint.y);
 		}
 	}
@@ -169,6 +199,25 @@ public class Line extends GeometricalObject implements Tool {
 	 */
 	public void setEndPoint(Point endPoint) {
 		this.endPoint = endPoint;
+	}
+
+	/**
+	 * Method returns color for drawing
+	 * 
+	 * @return drawing color
+	 */
+	public Color getColor() {
+		return color;
+	}
+
+	/**
+	 * Method sets drawing color
+	 * 
+	 * @param color
+	 *            - new drawing color
+	 */
+	public void setColor(Color color) {
+		this.color = color;
 	}
 
 }

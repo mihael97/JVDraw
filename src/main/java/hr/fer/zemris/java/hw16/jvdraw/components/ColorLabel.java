@@ -45,6 +45,8 @@ public class ColorLabel extends JLabel implements ColorChangeListener {
 
 		this.backgroudProvider.addColorChangeListener(this);
 		this.foregroundProvider.addColorChangeListener(this);
+
+		repaint();
 	}
 
 	/**
@@ -71,10 +73,11 @@ public class ColorLabel extends JLabel implements ColorChangeListener {
 	 */
 	@Override
 	protected void paintComponent(Graphics graphics) {
+		System.out.println("TU SAM!");
 		Color front = foregroundProvider.getCurrentColor();
 		Color back = backgroudProvider.getCurrentColor();
 
-		this.setText("Foreground color: (" + front.getRed() + ", " + front.getGreen() + ", " + front.getBlue()
+		super.setText("Foreground color: (" + front.getRed() + ", " + front.getGreen() + ", " + front.getBlue()
 				+ "), Background: (" + back.getRed() + ", " + back.getGreen() + ", " + back.getBlue() + ").");
 
 		super.paintComponent(graphics);

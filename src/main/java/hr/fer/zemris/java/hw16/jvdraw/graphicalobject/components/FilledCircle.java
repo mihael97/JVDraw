@@ -1,8 +1,10 @@
 package hr.fer.zemris.java.hw16.jvdraw.graphicalobject.components;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 
+import hr.fer.zemris.java.hw16.jvdraw.color.ColorChangeListener;
 import hr.fer.zemris.java.hw16.jvdraw.color.IColorProvider;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.editors.FilledCircleEditor;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.editors.GeometricalObjectEditor;
@@ -33,6 +35,11 @@ public class FilledCircle extends Circle implements Tool {
 	private IColorProvider fillColorProvider;
 
 	/**
+	 * Color for fill circle
+	 */
+	private Color fillColor;
+
+	/**
 	 * Constructor creates new {@link FilledCircle}
 	 * 
 	 * @param fillColorProvider
@@ -43,6 +50,32 @@ public class FilledCircle extends Circle implements Tool {
 	public FilledCircle(IColorProvider fillColorProvider, IColorProvider drawColorProvider) {
 		super(drawColorProvider);
 		this.fillColorProvider = fillColorProvider;
+		this.fillColorProvider.addColorChangeListener(new ColorChangeListener() {
+			@Override
+			public void newColorSelected(IColorProvider source, Color oldColor, Color newColor) {
+				fillColor = newColor;
+			}
+		});
+		addListener();
+	}
+
+	/**
+	 * Constructor creates new final filled circle
+	 * 
+	 * @param x
+	 *            - x coordinate of center
+	 * @param y
+	 *            - y coordinate of center
+	 * @param rad
+	 *            - radius
+	 * @param col
+	 *            - color for drawing
+	 * @param colFill
+	 *            - color for filling
+	 */
+	public FilledCircle(int x, int y, double rad, Color col, Color colFill) {
+		super(x, y, rad, col);
+		this.fillColor = colFill;
 	}
 
 	/**
@@ -54,7 +87,7 @@ public class FilledCircle extends Circle implements Tool {
 	public void paint(Graphics2D g2d) {
 		if (center != null) {
 			double halfRadius = (double) (radius / 2);
-			g2d.setColor(fillColorProvider.getCurrentColor());
+			g2d.setColor(fillColor);
 			g2d.fillOval((int) (center.x - halfRadius), (int) (center.y - halfRadius), (int) radius, (int) radius);
 
 			super.paint(g2d);
@@ -79,6 +112,25 @@ public class FilledCircle extends Circle implements Tool {
 	@Override
 	public GeometricalObjectEditor createGeometricalObjectEditor() {
 		return new FilledCircleEditor(this);
+	}
+
+	/**
+	 * Method returns fill color
+	 * 
+	 * @return fill color
+	 */
+	public Color getFillColor() {
+		return fillColor;
+	}
+
+	/**
+	 * Method sets fill color
+	 * 
+	 * @param fillColor
+	 *            - fill color
+	 */
+	public void setFillColor(Color fillColor) {
+		this.fillColor = fillColor;
 	}
 
 }

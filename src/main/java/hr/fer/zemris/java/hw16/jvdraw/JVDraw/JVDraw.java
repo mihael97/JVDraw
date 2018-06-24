@@ -18,6 +18,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -37,6 +38,7 @@ import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.components.Circle;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.components.FilledCircle;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.components.Line;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.editors.GeometricalObjectEditor;
+import hr.fer.zemris.java.hw16.jvdraw.menuactions.OpenFile;
 
 /**
  * Class represents main class where graphical interface initialized
@@ -74,6 +76,10 @@ public class JVDraw extends JFrame {
 	 */
 	private JDrawingCanvas canvas;
 
+	/**
+	 * Group of button contains buttons for changing type of
+	 * {@link GeometricalObject} we drawing
+	 */
 	private ButtonGroup group;
 
 	/**
@@ -130,16 +136,17 @@ public class JVDraw extends JFrame {
 	private KeyListener addKeyListener() {
 		return new KeyAdapter() {
 
+			@SuppressWarnings("unchecked")
 			@Override
 			public void keyPressed(KeyEvent arg0) {
 				int keyCode = arg0.getKeyCode();
 
 				if (keyCode == KeyEvent.VK_DELETE) {
-
+					model.remove(((JList<GeometricalObject>) arg0.getSource()).getSelectedValue());
 				} else if (keyCode == KeyEvent.VK_PLUS) {
-
+					System.out.println("Plus");
 				} else if (keyCode == KeyEvent.VK_MINUS) {
-
+					System.out.println("Minus");
 				}
 
 			}
@@ -201,6 +208,10 @@ public class JVDraw extends JFrame {
 
 		JMenu file = new JMenu("File");
 		panel.add(file);
+
+		JMenuItem open = new JMenuItem("Open");
+		open.addActionListener(new OpenFile(model));
+		file.add(open);
 
 		JToolBar toolBar = new JToolBar();
 		panel.add(toolBar, JToolBar.LEFT_ALIGNMENT);

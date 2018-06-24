@@ -36,6 +36,16 @@ public interface DrawingModel {
 	 *             - if argument is <code>null</code>
 	 */
 	public void add(GeometricalObject object);
+	
+	
+	/**
+	 * Method removes object into list of stored objects
+	 * 
+	 * @param object
+	 *            - object we want to remove
+	 * 
+	 */
+	public void remove(GeometricalObject object);
 
 	/**
 	 * Method adds drawing model listener

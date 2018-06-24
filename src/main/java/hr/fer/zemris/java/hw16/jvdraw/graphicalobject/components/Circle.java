@@ -3,10 +3,12 @@ package hr.fer.zemris.java.hw16.jvdraw.graphicalobject.components;
 import static java.lang.Math.pow;
 import static java.lang.Math.sqrt;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 
+import hr.fer.zemris.java.hw16.jvdraw.color.ColorChangeListener;
 import hr.fer.zemris.java.hw16.jvdraw.color.IColorProvider;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.GeometricalObject;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.editors.CircleEditor;
@@ -34,6 +36,10 @@ public class Circle extends GeometricalObject implements Tool {
 	 * Provider contains color for drawing
 	 */
 	private IColorProvider drawColorProvider;
+	/**
+	 * Color for drawing
+	 */
+	private Color color;
 
 	/**
 	 * Constructor
@@ -44,6 +50,40 @@ public class Circle extends GeometricalObject implements Tool {
 	public Circle(IColorProvider drawColorProvider) {
 		super();
 		this.drawColorProvider = drawColorProvider;
+		addListener();
+		this.color = drawColorProvider.getCurrentColor();
+	}
+
+	/**
+	 * Constructor accepts new {@link Circle}
+	 * 
+	 * @param xCenter
+	 *            - x coordinate of center
+	 * @param yCenter
+	 *            - y coordinate of center
+	 * @param radius
+	 *            - radius
+	 * @param color
+	 *            - color
+	 */
+	public Circle(int xCenter, int yCenter, double radius, Color color) {
+		addListener();
+		this.center = new Point(xCenter, yCenter);
+		this.radius = radius;
+		this.color = color;
+	}
+
+	/**
+	 * Method adds color change listener
+	 */
+	protected void addListener() {
+		drawColorProvider.addColorChangeListener(new ColorChangeListener() {
+
+			@Override
+			public void newColorSelected(IColorProvider source, Color oldColor, Color newColor) {
+				color = newColor;
+			}
+		});
 	}
 
 	/**
@@ -122,7 +162,7 @@ public class Circle extends GeometricalObject implements Tool {
 	public void paint(Graphics2D g2d) {
 		if (center != null) {
 			double halfRadius = (double) (radius / 2);
-			g2d.setColor(drawColorProvider.getCurrentColor());
+			g2d.setColor(color);
 			g2d.fillOval((int) (center.x - halfRadius), (int) (center.y - halfRadius), (int) radius, (int) radius);
 		}
 	}
@@ -183,6 +223,25 @@ public class Circle extends GeometricalObject implements Tool {
 	 */
 	public void setRadius(double radius) {
 		this.radius = radius;
+	}
+
+	/**
+	 * Method returns current color for drawing
+	 * 
+	 * @return color
+	 */
+	public Color getColor() {
+		return color;
+	}
+
+	/**
+	 * Method sets current drawing color
+	 * 
+	 * @param color
+	 *            - new drawing color
+	 */
+	public void setColor(Color color) {
+		this.color = color;
 	}
 
 }

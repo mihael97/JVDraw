@@ -1,5 +1,6 @@
 package hr.fer.zemris.java.hw16.jvdraw.graphicalobject.editors;
 
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.Point;
 import java.util.Objects;
@@ -10,7 +11,17 @@ import javax.swing.JTextField;
 
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.components.Circle;
 
+/**
+ * Class represents editor for circle parameters
+ * 
+ * @author Mihael
+ *
+ */
 public class CircleEditor extends GeometricalObjectEditor {
+	/**
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * Reference to editor owner
 	 */
@@ -87,6 +98,7 @@ public class CircleEditor extends GeometricalObjectEditor {
 	public void acceptEditing() {
 		circle.setCenter(new Point(xCenter, yCenter));
 		circle.setRadius(radius);
+		circle.setColor(new Color(red, green, blue));
 	}
 
 	/**

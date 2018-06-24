@@ -7,7 +7,6 @@ import java.util.Objects;
 import hr.fer.zemris.java.hw16.jvdraw.drawing.interfaces.DrawingModel;
 import hr.fer.zemris.java.hw16.jvdraw.drawing.interfaces.DrawingModelListener;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.GeometricalObject;
-import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.interfaces.GeometricalObjectListener;
 
 /**
  * Class implements {@link DrawingModel} and provides implementation for all
@@ -55,13 +54,10 @@ public class DrawingModelImplementation implements DrawingModel {
 	public void add(GeometricalObject object) {
 		objects.add(Objects.requireNonNull(object, "Geometrical object cannot be null!"));
 		objects.get(objects.size() - 1);
-		object.addGeometricalObjectListener(new GeometricalObjectListener() {
+		object.addGeometricalObjectListener(p -> {
 
-			@Override
-			public void geometricalObjectChanged(GeometricalObject o) {
-				listeners.forEach(
-						e -> e.objectsChanged(DrawingModelImplementation.this, objects.indexOf(o), objects.indexOf(o)));
-			}
+			listeners.forEach(
+					e -> e.objectsChanged(DrawingModelImplementation.this, objects.indexOf(p), objects.indexOf(p)));
 		});
 		listeners.forEach(e -> e.objectsAdded(this, objects.size() - 1, objects.size() - 1));
 	}
@@ -84,6 +80,18 @@ public class DrawingModelImplementation implements DrawingModel {
 	@Override
 	public void removeDrawingModelListener(DrawingModelListener l) {
 		listeners.remove(l);
+	}
+
+	/**
+	 * (non-Javadoc)
+	 * 
+	 * @see hr.fer.zemris.java.hw16.jvdraw.drawing.interfaces.DrawingModel#remove(hr.fer.zemris.java.hw16.jvdraw.graphicalobject.GeometricalObject)
+	 */
+	@Override
+	public void remove(GeometricalObject object) {
+		int index = objects.indexOf(object);
+		objects.remove(object);
+		listeners.forEach(e -> e.objectsRemoved(this, index, index));
 	}
 
 }

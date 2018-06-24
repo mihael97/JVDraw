@@ -1,5 +1,6 @@
 package hr.fer.zemris.java.hw16.jvdraw.graphicalobject.editors;
 
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.Point;
 import java.util.Objects;
@@ -10,18 +11,58 @@ import javax.swing.JTextField;
 
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.components.FilledCircle;
 
+/**
+ * Class represents editor for {@link FilledCircle} parameters
+ * 
+ * @author Mihael
+ *
+ */
 public class FilledCircleEditor extends GeometricalObjectEditor {
+	/**
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
+	 * Reference to editor's owner
+	 */
 	private FilledCircle circle;
+	/**
+	 * X coordinate of center
+	 */
 	private Integer xCenter;
+	/**
+	 * Y coordinate of center
+	 */
 	private Integer yCenter;
+	/**
+	 * Radius
+	 */
 	private Double radius;
 
+	/**
+	 * Red component of draw color
+	 */
 	private Integer redDraw;
+	/**
+	 * Green component of fill color
+	 */
 	private Integer greenDraw;
+	/**
+	 * Blue component of fill color
+	 */
 	private Integer blueDraw;
 
+	/**
+	 * Red component of fill color
+	 */
 	private Integer redFill;
+	/**
+	 * Green component of fill color
+	 */
 	private Integer greenFill;
+	/**
+	 * Blue component of fill color
+	 */
 	private Integer blueFill;
 
 	/**
@@ -65,7 +106,7 @@ public class FilledCircleEditor extends GeometricalObjectEditor {
 		this.greenFill = Integer.parseInt(((JTextField) (RGBPanel.getComponentAt(2, 1))).getText());
 		this.blueFill = Integer.parseInt(((JTextField) (RGBPanel.getComponentAt(3, 1))).getText());
 
-		if (!Util.checkRGB(redDraw, greenDraw, blueDraw)) {
+		if (!Util.checkRGB(redFill, greenFill, blueFill)) {
 			throw new IllegalArgumentException("invalid color!");
 		}
 	}
@@ -79,6 +120,8 @@ public class FilledCircleEditor extends GeometricalObjectEditor {
 	public void acceptEditing() {
 		circle.setCenter(new Point(xCenter, yCenter));
 		circle.setRadius(radius);
+		circle.setColor(new Color(redDraw, greenDraw, blueDraw));
+		circle.setFillColor(new Color(redFill, greenFill, blueFill));
 	}
 
 	/**
