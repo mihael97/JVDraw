@@ -4,6 +4,8 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 
+import javax.sound.midi.Synthesizer;
+
 import hr.fer.zemris.java.hw16.jvdraw.color.IColorProvider;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.GeometricalObject;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.editors.GeometricalObjectEditor;
@@ -75,7 +77,7 @@ public class Line extends GeometricalObject implements Tool {
 		if (startPoint == null) {
 			startPoint = e.getLocationOnScreen();
 			endPoint = e.getLocationOnScreen();
-		} else if (endPoint == null) {
+		} else {
 			endPoint = e.getLocationOnScreen();
 		}
 	}
@@ -107,9 +109,11 @@ public class Line extends GeometricalObject implements Tool {
 	 */
 	@Override
 	public void paint(Graphics2D g2d) {
-		g2d.setColor(colorProvider.getCurrentColor());
-
-		g2d.drawLine(startPoint.x, startPoint.y, endPoint.x, endPoint.y);
+		if (startPoint != null) {
+			System.out.println(colorProvider.getCurrentColor());
+			g2d.setColor(colorProvider.getCurrentColor());
+			g2d.drawLine(startPoint.x, startPoint.y, endPoint.x, endPoint.y);
+		}
 	}
 
 	/**
@@ -149,5 +153,4 @@ public class Line extends GeometricalObject implements Tool {
 		this.endPoint = endPoint;
 	}
 
-	
 }

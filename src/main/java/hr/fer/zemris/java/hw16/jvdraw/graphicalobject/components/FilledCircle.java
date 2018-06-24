@@ -3,8 +3,6 @@ package hr.fer.zemris.java.hw16.jvdraw.graphicalobject.components;
 import java.awt.Graphics2D;
 import java.awt.Point;
 
-import javax.swing.JPanel;
-
 import hr.fer.zemris.java.hw16.jvdraw.color.IColorProvider;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.editors.FilledCircleEditor;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.editors.GeometricalObjectEditor;
@@ -54,11 +52,13 @@ public class FilledCircle extends Circle implements Tool {
 	 */
 	@Override
 	public void paint(Graphics2D g2d) {
-		double halfRadius = (double) (radius / 2);
-		g2d.setColor(fillColorProvider.getCurrentColor());
-		g2d.fillOval((int) (center.x - halfRadius), (int) (center.y - halfRadius), (int) radius, (int) radius);
+		if (center != null) {
+			double halfRadius = (double) (radius / 2);
+			g2d.setColor(fillColorProvider.getCurrentColor());
+			g2d.fillOval((int) (center.x - halfRadius), (int) (center.y - halfRadius), (int) radius, (int) radius);
 
-		super.paint(g2d);
+			super.paint(g2d);
+		}
 	}
 
 	/**
@@ -73,7 +73,9 @@ public class FilledCircle extends Circle implements Tool {
 
 	@Override
 	public GeometricalObjectEditor createGeometricalObjectEditor() {
+		FilledCircleEditor editor = new FilledCircleEditor(this);
 
+		return editor.createEditor();
 	}
 
 }

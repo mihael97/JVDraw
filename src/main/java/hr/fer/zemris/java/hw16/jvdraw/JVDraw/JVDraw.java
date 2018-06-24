@@ -30,8 +30,11 @@ import hr.fer.zemris.java.hw16.jvdraw.components.ColorLabel;
 import hr.fer.zemris.java.hw16.jvdraw.components.JColorArea;
 import hr.fer.zemris.java.hw16.jvdraw.drawing.DrawingModelImplementation;
 import hr.fer.zemris.java.hw16.jvdraw.drawing.DrawingObjectListModel;
+import hr.fer.zemris.java.hw16.jvdraw.drawing.JDrawingCanvas;
 import hr.fer.zemris.java.hw16.jvdraw.drawing.interfaces.DrawingModel;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.GeometricalObject;
+import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.components.Circle;
+import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.components.FilledCircle;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.components.Line;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.editors.GeometricalObjectEditor;
 
@@ -46,12 +49,30 @@ public class JVDraw extends JFrame {
 	 * serialVersionUID
 	 */
 	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Reference to drawing model
 	 */
 	private DrawingModel model;
 
-	private Class<GeometricalObject> currentState;
+	/**
+	 * Reference to current drawing object on {@link JDrawingCanvas}
+	 */
+	private GeometricalObject currentState;
+
+	/**
+	 * Color provider for drawing color
+	 */
+	private JColorArea fgColorArea;
+	/**
+	 * Color provider for filling color
+	 */
+	private JColorArea bgColorArea;
+
+	/**
+	 * Reference to {@link JDrawingCanvas}
+	 */
+	private JDrawingCanvas canvas;
 
 	/**
 	 * Constructor creates new JVDraw
@@ -59,6 +80,7 @@ public class JVDraw extends JFrame {
 	public JVDraw() {
 		this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		model = new DrawingModelImplementation();
+		canvas = new JDrawingCanvas(model, this);
 		setTitle("JDraw");
 		setLocation(400, 200);
 		setSize(500, 500);
@@ -71,8 +93,11 @@ public class JVDraw extends JFrame {
 	 */
 	private void initGUI() {
 		this.setLayout(new BorderLayout());
-
-		this.add(setItems(), BorderLayout.PAGE_END);
+		fgColorArea = new JColorArea(Color.BLUE);
+		bgColorArea = new JColorArea(Color.RED);
+		this.add(createPanel(fgColorArea, bgColorArea), BorderLayout.PAGE_START);
+		this.add(new ColorLabel(fgColorArea, bgColorArea), BorderLayout.PAGE_END);
+		this.add(canvas, BorderLayout.CENTER);
 		this.add(new JScrollPane(createList()), BorderLayout.LINE_END);
 	}
 
@@ -160,20 +185,6 @@ public class JVDraw extends JFrame {
 	}
 
 	/**
-	 * Method returns {@link ColorLabel} for bottom of frame
-	 * 
-	 * @return {@link ColorLabel}
-	 */
-	private Component setItems() {
-		JColorArea fgColorArea = new JColorArea(Color.RED);
-		JColorArea bgColorArea = new JColorArea(Color.BLUE);
-
-		this.add(createPanel(fgColorArea, bgColorArea), BorderLayout.PAGE_START);
-
-		return new ColorLabel(fgColorArea, bgColorArea);
-	}
-
-	/**
 	 * Method creates {@link JPanel} for top side of out frame
 	 * 
 	 * @param fgColorArea
@@ -213,14 +224,33 @@ public class JVDraw extends JFrame {
 		List<AbstractButton> list = new ArrayList<>();
 
 		JToggleButton line = new JToggleButton("Line");
+		line.addActionListener(e -> {
+			currentState = new Line(fgColorArea);
+		});
 		list.add(line);
 		JToggleButton circle = new JToggleButton("Circle");
+		circle.addActionListener(e -> {
+			currentState = new Circle(fgColorArea);
+		});
 		list.add(circle);
 
 		JToggleButton filledCircle = new JToggleButton("Filled circle");
+		filledCircle.addActionListener(e -> {
+			currentState = new FilledCircle(bgColorArea, fgColorArea);
+
+		});
 		list.add(filledCircle);
 
 		return list;
+	}
+
+	/**
+	 * Method returns current active {@link GeometricalObject} state
+	 * 
+	 * @return current active state
+	 */
+	public GeometricalObject getCurrentState() {
+		return currentState;
 	}
 
 	/**

@@ -7,6 +7,7 @@ import java.util.Objects;
 import hr.fer.zemris.java.hw16.jvdraw.drawing.interfaces.DrawingModel;
 import hr.fer.zemris.java.hw16.jvdraw.drawing.interfaces.DrawingModelListener;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.GeometricalObject;
+import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.interfaces.GeometricalObjectListener;
 
 /**
  * Class implements {@link DrawingModel} and provides implementation for all
@@ -54,6 +55,14 @@ public class DrawingModelImplementation implements DrawingModel {
 	public void add(GeometricalObject object) {
 		objects.add(Objects.requireNonNull(object, "Geometrical object cannot be null!"));
 		objects.get(objects.size() - 1);
+		object.addGeometricalObjectListener(new GeometricalObjectListener() {
+
+			@Override
+			public void geometricalObjectChanged(GeometricalObject o) {
+				listeners.forEach(
+						e -> e.objectsChanged(DrawingModelImplementation.this, objects.indexOf(o), objects.indexOf(o)));
+			}
+		});
 		listeners.forEach(e -> e.objectsAdded(this, objects.size() - 1, objects.size() - 1));
 	}
 

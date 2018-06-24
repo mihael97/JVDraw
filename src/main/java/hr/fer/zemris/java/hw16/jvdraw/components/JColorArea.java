@@ -57,7 +57,7 @@ public class JColorArea extends JComponent implements IColorProvider {
 		this.addMouseListener(new MouseAdapter() {
 
 			@Override
-			public void mousePressed(MouseEvent arg0) {
+			public void mousePressed(MouseEvent event) {
 				setColorAndInform(JColorChooser.showDialog(JColorArea.this, "Color chooser", selectedColor));
 			}
 
@@ -123,13 +123,13 @@ public class JColorArea extends JComponent implements IColorProvider {
 	/**
 	 * Method paints color chooser icon to selected color
 	 * 
-	 * @param grapgics
+	 * @param graphics
 	 *            - graphics
 	 */
 	@Override
-	protected void paintComponent(Graphics grapgics) {
-		grapgics.setColor(selectedColor);
-		grapgics.fillRect(0, 0, getPreferredSize().width, getPreferredSize().height);
+	protected void paintComponent(Graphics graphics) {
+		graphics.setColor(selectedColor);
+		graphics.fillRect(0, 0, getPreferredSize().width, getPreferredSize().height);
 	}
 
 }

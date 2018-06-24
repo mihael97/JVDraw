@@ -85,6 +85,7 @@ public class Circle extends GeometricalObject implements Tool {
 	public void mouseClicked(MouseEvent e) {
 		if (center == null) {
 			center = e.getLocationOnScreen();
+			this.radius = 0;
 		} else {
 			this.radius = calculateRadius(e.getLocationOnScreen());
 		}
@@ -97,7 +98,9 @@ public class Circle extends GeometricalObject implements Tool {
 	 */
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		this.radius = calculateRadius(e.getLocationOnScreen());
+		if (center != null) {
+			this.radius = calculateRadius(e.getLocationOnScreen());
+		}
 	}
 
 	/**
@@ -117,9 +120,11 @@ public class Circle extends GeometricalObject implements Tool {
 	 */
 	@Override
 	public void paint(Graphics2D g2d) {
-		double halfRadius = (double) (radius / 2);
-		g2d.setColor(drawColorProvider.getCurrentColor());
-		g2d.fillOval((int) (center.x - halfRadius), (int) (center.y - halfRadius), (int) radius, (int) radius);
+		if (center != null) {
+			double halfRadius = (double) (radius / 2);
+			g2d.setColor(drawColorProvider.getCurrentColor());
+			g2d.fillOval((int) (center.x - halfRadius), (int) (center.y - halfRadius), (int) radius, (int) radius);
+		}
 	}
 
 	/**

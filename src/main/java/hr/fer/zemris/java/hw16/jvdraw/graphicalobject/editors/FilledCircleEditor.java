@@ -1,7 +1,10 @@
 package hr.fer.zemris.java.hw16.jvdraw.graphicalobject.editors;
 
+import java.awt.GridLayout;
+import java.awt.Point;
 import java.util.Objects;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -12,9 +15,14 @@ public class FilledCircleEditor extends GeometricalObjectEditor {
 	private Integer xCenter;
 	private Integer yCenter;
 	private Double radius;
-	private Integer red;
-	private Integer green;
-	private Integer blue;
+
+	private Integer redDraw;
+	private Integer greenDraw;
+	private Integer blueDraw;
+
+	private Integer redFill;
+	private Integer greenFill;
+	private Integer blueFill;
 
 	public FilledCircleEditor(FilledCircle circle) {
 		this.circle = Objects.requireNonNull(circle, "Circle reference cannot be null!");
@@ -32,20 +40,40 @@ public class FilledCircleEditor extends GeometricalObjectEditor {
 			throw new IllegalArgumentException("Invalid radius argument!");
 		}
 
-		JPanel RGBPanel = (JPanel) (this.getComponentAt(3, 2));
-		this.red = Integer.parseInt(((JTextField) (RGBPanel.getComponentAt(1, 1))).getText());
-		this.green = Integer.parseInt(((JTextField) (RGBPanel.getComponentAt(2, 1))).getText());
-		this.blue = Integer.parseInt(((JTextField) (RGBPanel.getComponentAt(3, 1))).getText());
+		JPanel RGBPanel = (JPanel) (this.getComponentAt(2, 3));
+		this.redDraw = Integer.parseInt(((JTextField) (RGBPanel.getComponentAt(1, 1))).getText());
+		this.greenDraw = Integer.parseInt(((JTextField) (RGBPanel.getComponentAt(2, 1))).getText());
+		this.blueDraw = Integer.parseInt(((JTextField) (RGBPanel.getComponentAt(3, 1))).getText());
 
-		if (!Util.checkRGB(red, green, blue)) {
+		if (!Util.checkRGB(redDraw, greenDraw, blueDraw)) {
+			throw new IllegalArgumentException("invalid color!");
+		}
+
+		RGBPanel = (JPanel) (this.getComponentAt(2, 4));
+		this.redFill = Integer.parseInt(((JTextField) (RGBPanel.getComponentAt(1, 1))).getText());
+		this.greenFill = Integer.parseInt(((JTextField) (RGBPanel.getComponentAt(2, 1))).getText());
+		this.blueFill = Integer.parseInt(((JTextField) (RGBPanel.getComponentAt(3, 1))).getText());
+
+		if (!Util.checkRGB(redDraw, greenDraw, blueDraw)) {
 			throw new IllegalArgumentException("invalid color!");
 		}
 	}
 
 	@Override
 	public void acceptEditing() {
-		// TODO Auto-generated method stub
+		circle.setCenter(new Point(xCenter, yCenter));
+		circle.setRadius(radius);
+	}
 
+	public GeometricalObjectEditor createEditor() {
+		this.setLayout(new GridLayout(4, 2));
+		Util.addPoint(this, "Center: ");
+		Util.addRadius(this);
+		this.add(new JLabel("Color drawing: "));
+		Util.addPanels(this, true);
+		this.add(new JLabel("Color filling: "));
+		Util.addPanels(this, true);
+		return this;
 	}
 
 }
