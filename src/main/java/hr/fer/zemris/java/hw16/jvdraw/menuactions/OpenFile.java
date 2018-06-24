@@ -61,9 +61,9 @@ public class OpenFile extends AbstractAction {
 			return;
 		}
 
-		Path file = fc.getSelectedFile().toPath();
+		Path path = fc.getSelectedFile().toPath();
 		try {
-			List<GeometricalObject> list = readFile(file);
+			List<GeometricalObject> list = readFile(path);
 
 			for (GeometricalObject object : list) {
 				model.add(object);
@@ -73,6 +73,8 @@ public class OpenFile extends AbstractAction {
 			e.printStackTrace();
 		}
 
+		SaveFile.setUnModified();
+		SaveFile.setPath(path);
 	}
 
 	/**
@@ -94,20 +96,23 @@ public class OpenFile extends AbstractAction {
 			switch (array[0]) {
 			case "LINE":
 				int xStart = Integer.parseInt(array[1]);
-				int yStart = Integer.parseInt(array[1]);
-				int xEnd = Integer.parseInt(array[1]);
-				int yEnd = Integer.parseInt(array[1]);
+				int yStart = Integer.parseInt(array[2]);
+				int xEnd = Integer.parseInt(array[3]);
+				int yEnd = Integer.parseInt(array[4]);
 
-				forReturn.add(new Line(xStart, yStart, xEnd, yEnd));
+				Color color = new Color(Integer.parseInt(array[5]), Integer.parseInt(array[6]),
+						Integer.parseInt(array[7]));
+
+				forReturn.add(new Line(xStart, yStart, xEnd, yEnd, color));
 				break;
 			case "CIRCLE":
 				int xCenter = Integer.parseInt(array[1]);
 				int yCenter = Integer.parseInt(array[2]);
 				double radius = Integer.parseInt(array[3]);
-				Color color = new Color(Integer.parseInt(array[4]), Integer.parseInt(array[5]),
+				Color colo = new Color(Integer.parseInt(array[4]), Integer.parseInt(array[5]),
 						Integer.parseInt(array[6]));
 
-				forReturn.add(new Circle(xCenter, yCenter, radius, color));
+				forReturn.add(new Circle(xCenter, yCenter, radius, colo));
 				break;
 
 			case "FCIRCLE":

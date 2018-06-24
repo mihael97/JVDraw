@@ -3,7 +3,6 @@ package hr.fer.zemris.java.hw16.jvdraw.JVDraw;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.GridLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -18,6 +17,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -38,7 +38,9 @@ import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.components.Circle;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.components.FilledCircle;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.components.Line;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.editors.GeometricalObjectEditor;
+import hr.fer.zemris.java.hw16.jvdraw.menuactions.Export;
 import hr.fer.zemris.java.hw16.jvdraw.menuactions.OpenFile;
+import hr.fer.zemris.java.hw16.jvdraw.menuactions.SaveAs;
 
 /**
  * Class represents main class where graphical interface initialized
@@ -204,14 +206,23 @@ public class JVDraw extends JFrame {
 	 */
 	private JPanel createPanel(JColorArea fgColorArea, JColorArea bgColorArea) {
 		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(2, 1));
 
 		JMenu file = new JMenu("File");
-		panel.add(file);
+		JMenuBar bar=new JMenuBar();
+		panel.add(bar,JPanel.LEFT_ALIGNMENT);
+		bar.add(file);
 
 		JMenuItem open = new JMenuItem("Open");
 		open.addActionListener(new OpenFile(model));
 		file.add(open);
+
+		JMenuItem export = new JMenuItem("Export");
+		export.addActionListener(new Export(model));
+		file.add(export);
+		
+		JMenuItem saveAs = new JMenuItem("Save As");
+		saveAs.addActionListener(new SaveAs(model));
+		file.add(saveAs);
 
 		JToolBar toolBar = new JToolBar();
 		panel.add(toolBar, JToolBar.LEFT_ALIGNMENT);
@@ -273,7 +284,7 @@ public class JVDraw extends JFrame {
 	public void reset() {
 		if (currentState instanceof Line) {
 			currentState = new Line(fgColorArea);
-		} else if (currentState instanceof Circle) {
+		} else if (currentState instanceof Circle && !(currentState instanceof FilledCircle)) {
 			currentState = new Circle(fgColorArea);
 		} else {
 			currentState = new FilledCircle(fgColorArea, bgColorArea);

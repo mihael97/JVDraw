@@ -1,12 +1,14 @@
 package hr.fer.zemris.java.hw16.jvdraw.menuactions;
 
 import java.awt.Graphics2D;
-import java.awt.Image;
+import java.awt.GridLayout;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
@@ -28,14 +30,12 @@ public class Export extends AbstractAction {
 		this.model = model;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		JPanel panel = createJPanel();
 
-		if (JOptionPane.showConfirmDialog(null, panel, "Choose format:",
-				JOptionPane.OK_CANCEL_OPTION) == JOptionPane.CANCEL_OPTION) {
-			return;
-		}
+		Path path = getFormatAndPath();
 
 		JFileChooser fc = new JFileChooser();
 		fc.setDialogTitle("Choose path:");
@@ -45,43 +45,71 @@ public class Export extends AbstractAction {
 		}
 
 		File file = fc.getSelectedFile();
-		
-		//bounding box
-		GeometricalObjectBBCalculator calc=new GeometricalObjectBBCalculator();
-		
-		for(int i=0,len=model.getSize();i<len;i++) {
+
+		// bounding box
+		GeometricalObjectBBCalculator calc = new GeometricalObjectBBCalculator();
+
+		for (int i = 0, len = model.getSize(); i < len; i++) {
 			model.getObject(i).accept(calc);
 		}
-		
-		Rectangle box=calc.getBoundingBox();
-		BufferedImage image=new BufferedImage(box.width, box.height, BufferedImage.TYPE_3BYTE_BGR);
-		
-		Graphics2D g=image.createGraphics();
+
+		Rectangle box = calc.getBoundingBox();
+		BufferedImage image = new BufferedImage(box.width, box.height, BufferedImage.TYPE_3BYTE_BGR);
+
+		Graphics2D g = image.createGraphics();
 		g.translate(-box.width, -box.height);
-		
-		GeometricalObjectPainter painter=new GeometricalObjectPainter(g);
-		
-		for(int i=0,len=model.getSize();i<len;i++) {
+
+		GeometricalObjectPainter painter = new GeometricalObjectPainter(g);
+
+		for (int i = 0, len = model.getSize(); i < len; i++) {
 			model.getObject(i).accept(painter);
 		}
-		
+
 		g.dispose();
-		
-		ImageIO.write(image,((JComboBox<String>)panel.getComponent(2)).getSelectedItem() ,file)
-		
+
+		System.out.println(panel.getComponentCount());
+		String string = (String) (((JLabel) panel.getComponentAt(1, 1)).getText());
+		System.out.println(string);
+
+		try {
+			ImageIO.write(image, (String) ((JComboBox<String>) panel.getComponentAt(1, 2)).getSelectedItem(), file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		JOptionPane.showMessageDialog(null, "Image has been exported!");
+	}
+
+	private Path getFormatAndPath() {
+		Path forReturn = null;
+		JFileChooser fc = new JFileChooser();
+		fc.setDialogTitle("Choose path(extension must be png,jpg or gif");
+		do {
+			if (fc.showSaveDialog(null) != JFileChooser.APPROVE_OPTION) {
+				return null;
+			}
+
+			forReturn = fc.getSelectedFile().toPath();
+			String ext = fc.toString().substring(fc.toString().lastIndexOf(".") + 1);
+
+			if (ext.equals("gif") || ext.equals("png") || ext.equals("jpg")) {
+				break;
+			}
+
+		} while (true);
+
+		System.out.println(forReturn.toString());
+		return forReturn;
 	}
 
 	private JPanel createJPanel() {
-		JPanel panel = new JPanel();
+		JPanel panel = new JPanel(new GridLayout(1, 2));
 
 		panel.add(new JLabel("Select format: "));
-		JComboBox<String> box = new JComboBox<>();
-
-		box.add(new JLabel("png"));
-		box.add(new JLabel("jpg"));
-		box.add(new JLabel("gif"));
-
+		JComboBox<String> box = new JComboBox<>(new String[] { "png", "gif", "jpg" });
 		panel.add(box);
+
+		System.out.println(panel.getComponentCount());
 
 		return panel;
 	}

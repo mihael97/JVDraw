@@ -54,10 +54,13 @@ public class Line extends GeometricalObject implements Tool {
 	 *            - y coordinate of start point
 	 * @param xStart
 	 *            - x coordinate of start point
+	 * @param col
+	 *            - color
 	 */
-	public Line(int xStart, int yStart, int xEnd, int yEnd) {
+	public Line(int xStart, int yStart, int xEnd, int yEnd, Color col) {
 		this.startPoint = new Point(xStart, yStart);
 		this.endPoint = new Point(xEnd, yEnd);
+		this.color = col;
 	}
 
 	/**
