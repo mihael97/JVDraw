@@ -2,13 +2,10 @@ package hr.fer.zemris.java.hw16.jvdraw.components;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-
 import javax.swing.JLabel;
 
 import hr.fer.zemris.java.hw16.jvdraw.color.ColorChangeListener;
 import hr.fer.zemris.java.hw16.jvdraw.color.IColorProvider;
-
 
 /**
  * Class extends {@link JLabel} and in real time shows current informations
@@ -37,8 +34,10 @@ public class ColorLabel extends JLabel implements ColorChangeListener {
 	 * Constructor accepts references of provider to background and foreground color
 	 * and initializes new color label which shows informations about current colors
 	 * 
-	 * @param backgroundProvider - background color providers
-	 * @param foregroundProvider - foreground color providers
+	 * @param backgroundProvider
+	 *            - background color provider
+	 * @param foregroundProvider
+	 *            - foreground color provider
 	 */
 	public ColorLabel(IColorProvider backgroundProvider, IColorProvider foregroundProvider) {
 		this.backgroudProvider = backgroundProvider;
@@ -64,7 +63,7 @@ public class ColorLabel extends JLabel implements ColorChangeListener {
 	}
 
 	/**
-	 * Method accepts {@link Graphics2D} and sets updates informations of chosen
+	 * Method accepts {@link Graphics} and sets updates informations of chosen
 	 * colors
 	 * 
 	 * @param graphics

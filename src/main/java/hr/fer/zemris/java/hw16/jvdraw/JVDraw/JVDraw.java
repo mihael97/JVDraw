@@ -32,6 +32,7 @@ import hr.fer.zemris.java.hw16.jvdraw.drawing.DrawingModelImplementation;
 import hr.fer.zemris.java.hw16.jvdraw.drawing.DrawingObjectListModel;
 import hr.fer.zemris.java.hw16.jvdraw.drawing.interfaces.DrawingModel;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.GeometricalObject;
+import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.components.Line;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.editors.GeometricalObjectEditor;
 
 /**
@@ -49,6 +50,8 @@ public class JVDraw extends JFrame {
 	 * Reference to drawing model
 	 */
 	private DrawingModel model;
+
+	private Class<GeometricalObject> currentState;
 
 	/**
 	 * Constructor creates new JVDraw
@@ -134,7 +137,13 @@ public class JVDraw extends JFrame {
 
 				@SuppressWarnings("unchecked")
 				JList<GeometricalObject> list = (JList<GeometricalObject>) event.getSource();
+
 				GeometricalObject clicked = list.getSelectedValue();
+
+				if (clicked == null) {
+					return;
+				}
+
 				GeometricalObjectEditor editor = clicked.createGeometricalObjectEditor();
 				if (JOptionPane.showConfirmDialog(JVDraw.this, editor, "Edit",
 						JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {

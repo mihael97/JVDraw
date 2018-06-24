@@ -2,6 +2,7 @@ package hr.fer.zemris.java.hw16.jvdraw.components;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -75,7 +76,7 @@ public class JColorArea extends JComponent implements IColorProvider {
 		this.selectedColor = color;
 		listeners.forEach(e -> e.newColorSelected(this, oldColor, this.selectedColor));
 
-		// repaint();
+		repaint();
 	}
 
 	/**
@@ -117,7 +118,18 @@ public class JColorArea extends JComponent implements IColorProvider {
 	@Override
 	public void addColorChangeListener(ColorChangeListener listener) {
 		listeners.add(Objects.requireNonNull(listener, "Listener cannot be null!"));
+	}
 
+	/**
+	 * Method paints color chooser icon to selected color
+	 * 
+	 * @param grapgics
+	 *            - graphics
+	 */
+	@Override
+	protected void paintComponent(Graphics grapgics) {
+		grapgics.setColor(selectedColor);
+		grapgics.fillRect(0, 0, getPreferredSize().width, getPreferredSize().height);
 	}
 
 }

@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 import hr.fer.zemris.java.hw16.jvdraw.color.IColorProvider;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.GeometricalObject;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.editors.GeometricalObjectEditor;
+import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.editors.LineEditor;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.interfaces.Tool;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.visitors.GeometricalObjectVisitor;
 
@@ -49,7 +50,6 @@ public class Line extends GeometricalObject implements Tool {
 	 */
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -97,7 +97,6 @@ public class Line extends GeometricalObject implements Tool {
 	 */
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -120,8 +119,7 @@ public class Line extends GeometricalObject implements Tool {
 	 */
 	@Override
 	public void accept(GeometricalObjectVisitor v) {
-		// TODO Auto-generated method stub
-
+		v.visit(this);
 	}
 
 	/**
@@ -131,8 +129,25 @@ public class Line extends GeometricalObject implements Tool {
 	 */
 	@Override
 	public GeometricalObjectEditor createGeometricalObjectEditor() {
-		// TODO Auto-generated method stub
-		return null;
+		LineEditor editor = new LineEditor(this);
+		return editor.createEditor();
 	}
 
+	public Point getStartPoint() {
+		return startPoint;
+	}
+
+	public void setStartPoint(Point startPoint) {
+		this.startPoint = startPoint;
+	}
+
+	public Point getEndPoint() {
+		return endPoint;
+	}
+
+	public void setEndPoint(Point endPoint) {
+		this.endPoint = endPoint;
+	}
+
+	
 }

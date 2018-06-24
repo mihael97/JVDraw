@@ -1,5 +1,6 @@
 package hr.fer.zemris.java.hw16.jvdraw.drawing;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -18,11 +19,11 @@ public class DrawingModelImplementation implements DrawingModel {
 	/**
 	 * List of stored objects
 	 */
-	private List<GeometricalObject> objects;
+	private List<GeometricalObject> objects = new ArrayList<>();
 	/**
 	 * List of drawing model listeners
 	 */
-	private List<DrawingModelListener> listeners;
+	private List<DrawingModelListener> listeners = new ArrayList<>();
 
 	/**
 	 * (non-Javadoc)
@@ -52,7 +53,7 @@ public class DrawingModelImplementation implements DrawingModel {
 	@Override
 	public void add(GeometricalObject object) {
 		objects.add(Objects.requireNonNull(object, "Geometrical object cannot be null!"));
-		objects.get(objects.size()-1).
+		objects.get(objects.size() - 1);
 		listeners.forEach(e -> e.objectsAdded(this, objects.size() - 1, objects.size() - 1));
 	}
 
