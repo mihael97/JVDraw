@@ -39,6 +39,11 @@ public class Line extends GeometricalObject implements Tool {
 	private Color color;
 
 	/**
+	 * Identification number
+	 */
+	private int id;
+
+	/**
 	 * Constructor
 	 * 
 	 * @param yEnd
@@ -103,10 +108,11 @@ public class Line extends GeometricalObject implements Tool {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (startPoint == null) {
-			startPoint = e.getLocationOnScreen();
-			endPoint = e.getLocationOnScreen();
+			id = Constants.LINE++;
+			startPoint = e.getPoint();
+			endPoint = e.getPoint();
 		} else {
-			endPoint = e.getLocationOnScreen();
+			endPoint = e.getPoint();
 		}
 	}
 
@@ -117,7 +123,7 @@ public class Line extends GeometricalObject implements Tool {
 	 */
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		endPoint = e.getLocationOnScreen();
+		endPoint = e.getPoint();
 	}
 
 	/**
@@ -218,6 +224,16 @@ public class Line extends GeometricalObject implements Tool {
 	 */
 	public void setColor(Color color) {
 		this.color = color;
+	}
+
+	/**
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Line " + id;
 	}
 
 }

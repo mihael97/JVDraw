@@ -2,7 +2,7 @@ package hr.fer.zemris.java.hw16.jvdraw.graphicalobject.components;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Point;
+import java.awt.event.MouseEvent;
 
 import hr.fer.zemris.java.hw16.jvdraw.color.ColorChangeListener;
 import hr.fer.zemris.java.hw16.jvdraw.color.IColorProvider;
@@ -21,15 +21,6 @@ import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.visitors.GeometricalObject
  */
 public class FilledCircle extends Circle implements Tool {
 	/**
-	 * Circle center
-	 */
-	private Point center;
-	/**
-	 * Circle radius
-	 */
-	private double radius;
-
-	/**
 	 * Provider contains selected color for painting
 	 */
 	private IColorProvider fillColorProvider;
@@ -38,6 +29,11 @@ public class FilledCircle extends Circle implements Tool {
 	 * Color for fill circle
 	 */
 	private Color fillColor;
+
+	/**
+	 * Identification number
+	 */
+	private int id;
 
 	/**
 	 * Constructor creates new {@link FilledCircle}
@@ -56,7 +52,7 @@ public class FilledCircle extends Circle implements Tool {
 				fillColor = newColor;
 			}
 		});
-		addListener();
+		this.fillColor = this.fillColorProvider.getCurrentColor();
 	}
 
 	/**
@@ -85,12 +81,28 @@ public class FilledCircle extends Circle implements Tool {
 	 */
 	@Override
 	public void paint(Graphics2D g2d) {
-		if (center != null) {
-			double halfRadius = (double) (radius / 2);
+		if (getCenter() != null) {
 			g2d.setColor(fillColor);
-			g2d.fillOval((int) (center.x - halfRadius), (int) (center.y - halfRadius), (int) radius, (int) radius);
+			g2d.fillOval((int) (getCenter().x - getRadius()), (int) (getCenter().y - getRadius()),
+					(int) (2 * getRadius()), (int) (2 * getRadius()));
 
 			super.paint(g2d);
+		}
+	}
+
+	/**
+	 * (non-Javadoc)
+	 * 
+	 * @see hr.fer.zemris.java.hw16.jvdraw.graphicalobject.interfaces.Tool#mouseClicked(java.awt.event.MouseEvent)
+	 */
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		if (getCenter() == null) {
+			id = Constants.FILLED++;
+			setCenter(e.getPoint());
+			setRadius(0);
+		} else {
+			setRadius(super.calculateRadius(e.getPoint()));
 		}
 	}
 
@@ -133,4 +145,13 @@ public class FilledCircle extends Circle implements Tool {
 		this.fillColor = fillColor;
 	}
 
+	/**
+	 * (non-Javadoc)
+	 * 
+	 * @see hr.fer.zemris.java.hw16.jvdraw.graphicalobject.components.Circle#toString()
+	 */
+	@Override
+	public String toString() {
+		return "FCircle " + id;
+	}
 }

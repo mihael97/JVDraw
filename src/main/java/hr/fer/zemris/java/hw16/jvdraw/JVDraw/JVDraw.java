@@ -271,7 +271,13 @@ public class JVDraw extends JFrame {
 	 * This method is called when drawing object is finished and stored
 	 */
 	public void reset() {
-		currentState = null;
+		if (currentState instanceof Line) {
+			currentState = new Line(fgColorArea);
+		} else if (currentState instanceof Circle) {
+			currentState = new Circle(fgColorArea);
+		} else {
+			currentState = new FilledCircle(fgColorArea, bgColorArea);
+		}
 	}
 
 	/**

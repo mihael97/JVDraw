@@ -42,6 +42,11 @@ public class Circle extends GeometricalObject implements Tool {
 	private Color color;
 
 	/**
+	 * Identification number
+	 */
+	private int id;
+
+	/**
 	 * Constructor
 	 * 
 	 * @param drawColorProvider
@@ -112,7 +117,7 @@ public class Circle extends GeometricalObject implements Tool {
 	 *            - current focused point
 	 * @return distance
 	 */
-	private double calculateRadius(Point point) {
+	protected double calculateRadius(Point point) {
 		return sqrt(pow(center.x - point.x, 2) + pow(center.y - point.y, 2));
 	}
 
@@ -124,10 +129,11 @@ public class Circle extends GeometricalObject implements Tool {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (center == null) {
-			center = e.getLocationOnScreen();
+			id= Constants.CIRCLE++;
+			center = e.getPoint();
 			this.radius = 0;
 		} else {
-			this.radius = calculateRadius(e.getLocationOnScreen());
+			this.radius = calculateRadius(e.getPoint());
 		}
 	}
 
@@ -139,7 +145,7 @@ public class Circle extends GeometricalObject implements Tool {
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		if (center != null) {
-			this.radius = calculateRadius(e.getLocationOnScreen());
+			this.radius = calculateRadius(e.getPoint());
 		}
 	}
 
@@ -161,9 +167,8 @@ public class Circle extends GeometricalObject implements Tool {
 	@Override
 	public void paint(Graphics2D g2d) {
 		if (center != null) {
-			double halfRadius = (double) (radius / 2);
 			g2d.setColor(color);
-			g2d.fillOval((int) (center.x - halfRadius), (int) (center.y - halfRadius), (int) radius, (int) radius);
+			g2d.drawOval((int) (center.x - radius), (int) (center.y - radius), (int) (2 * radius), (int) (2 * radius));
 		}
 	}
 
@@ -242,6 +247,16 @@ public class Circle extends GeometricalObject implements Tool {
 	 */
 	public void setColor(Color color) {
 		this.color = color;
+	}
+
+	/**
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Circle " + id;
 	}
 
 }
