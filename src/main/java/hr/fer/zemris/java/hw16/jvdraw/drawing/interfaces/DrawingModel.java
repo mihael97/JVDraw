@@ -36,8 +36,7 @@ public interface DrawingModel {
 	 *             - if argument is <code>null</code>
 	 */
 	public void add(GeometricalObject object);
-	
-	
+
 	/**
 	 * Method removes object into list of stored objects
 	 * 
@@ -46,6 +45,18 @@ public interface DrawingModel {
 	 * 
 	 */
 	public void remove(GeometricalObject object);
+
+	/**
+	 * Method changes position of given object<br>
+	 * Position is changed for <code>offset</code> where offset can be smaller or
+	 * greater that zero
+	 * 
+	 * @param object
+	 *            - object which position we want to change
+	 * @param offset
+	 *            - offset
+	 */
+	public void changeOrder(GeometricalObject object, int offset);
 
 	/**
 	 * Method adds drawing model listener

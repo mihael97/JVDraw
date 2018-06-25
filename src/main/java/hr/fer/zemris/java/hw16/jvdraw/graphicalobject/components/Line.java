@@ -5,8 +5,6 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 
-import hr.fer.zemris.java.hw16.jvdraw.color.ColorChangeListener;
-import hr.fer.zemris.java.hw16.jvdraw.color.IColorProvider;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.GeometricalObject;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.editors.GeometricalObjectEditor;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.editors.LineEditor;
@@ -28,20 +26,11 @@ public class Line extends GeometricalObject implements Tool {
 	 * Line's end point
 	 */
 	private Point endPoint;
-	/**
-	 * Color provider
-	 */
-	private IColorProvider colorProvider;
 
 	/**
 	 * Color for drawing
 	 */
 	private Color color;
-
-	/**
-	 * Identification number
-	 */
-	private int id;
 
 	/**
 	 * Constructor
@@ -66,18 +55,11 @@ public class Line extends GeometricalObject implements Tool {
 	/**
 	 * Default constructor
 	 * 
-	 * @param fgColorArea
-	 *            - {@link IColorProvider} for drawing
+	 * @param color
+	 *            - {@link Color} for drawing
 	 */
-	public Line(IColorProvider fgColorArea) {
-		this.colorProvider = fgColorArea;
-		this.color = this.colorProvider.getCurrentColor();
-		this.colorProvider.addColorChangeListener(new ColorChangeListener() {
-			@Override
-			public void newColorSelected(IColorProvider source, Color oldColor, Color newColor) {
-				color = newColor;
-			}
-		});
+	public Line(Color color) {
+		this.color = color;
 	}
 
 	/**
@@ -111,7 +93,6 @@ public class Line extends GeometricalObject implements Tool {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (startPoint == null) {
-			id = Constants.LINE++;
 			startPoint = e.getPoint();
 			endPoint = e.getPoint();
 		} else {
@@ -236,7 +217,7 @@ public class Line extends GeometricalObject implements Tool {
 	 */
 	@Override
 	public String toString() {
-		return "Line " + id;
+		return "Line (" + startPoint.x + "," + startPoint.y + ")-(" + endPoint.x + "," + endPoint.y + ")";
 	}
 
 }

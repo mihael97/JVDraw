@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import hr.fer.zemris.java.hw16.jvdraw.JVDraw.ErrorClass;
 import hr.fer.zemris.java.hw16.jvdraw.drawing.interfaces.DrawingModel;
 import hr.fer.zemris.java.hw16.jvdraw.drawing.interfaces.DrawingModelListener;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.GeometricalObject;
@@ -92,6 +93,33 @@ public class DrawingModelImplementation implements DrawingModel {
 		int index = objects.indexOf(object);
 		objects.remove(object);
 		listeners.forEach(e -> e.objectsRemoved(this, index, index));
+	}
+
+	/**
+	 * (non-Javadoc)
+	 * 
+	 * @see hr.fer.zemris.java.hw16.jvdraw.drawing.interfaces.DrawingModel#changeOrder(hr.fer.zemris.java.hw16.jvdraw.graphicalobject.GeometricalObject,
+	 *      int)
+	 */
+	@Override
+	public void changeOrder(GeometricalObject object, int offset) {
+		try {
+			int index = objects.indexOf(object);
+
+			if (index + offset < 0 || index + offset > (objects.size() - 1)) {
+				return;
+			}
+
+			objects.remove(index);
+			objects.add(index + offset, object);
+
+			int upper = (offset > 0) ? index + offset : index;
+			int lower = (offset < 0) ? index + offset : index;
+
+			listeners.forEach(e -> e.objectsChanged(this, lower, upper));
+		} catch (IndexOutOfBoundsException e) {
+			ErrorClass.showError(e.getLocalizedMessage());
+		}
 	}
 
 }

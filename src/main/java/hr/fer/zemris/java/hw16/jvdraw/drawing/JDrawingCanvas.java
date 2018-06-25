@@ -169,10 +169,10 @@ public class JDrawingCanvas extends JComponent implements DrawingModelListener {
 
 			if (object instanceof Line) {
 				painter.visit((Line) object);
-			} else if (object instanceof Circle) {
-				painter.visit((Circle) object);
 			} else if (object instanceof FilledCircle) {
 				painter.visit((FilledCircle) object);
+			} else if (object instanceof Circle) {
+				painter.visit((Circle) object);
 			}
 		}
 
@@ -183,11 +183,11 @@ public class JDrawingCanvas extends JComponent implements DrawingModelListener {
 
 		if (object instanceof Line) {
 			((Line) object).paint((Graphics2D) graphics);
-			;
-		} else if (object instanceof Circle) {
-			((Circle) object).paint((Graphics2D) graphics);
+
 		} else if (object instanceof FilledCircle) {
 			((FilledCircle) object).paint((Graphics2D) graphics);
+		} else if (object instanceof Circle) {
+			((Circle) object).paint((Graphics2D) graphics);
 		}
 	}
 

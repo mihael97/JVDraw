@@ -3,6 +3,7 @@ package hr.fer.zemris.java.hw16.jvdraw.JVDraw;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.GridLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -14,9 +15,11 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -99,7 +102,7 @@ public class JVDraw extends JFrame {
 
 			@Override
 			public void windowClosing(WindowEvent arg0) {
-				new Exit().actionPerformed(null);
+				new Exit(model).actionPerformed(null);
 			}
 
 		});
@@ -130,7 +133,6 @@ public class JVDraw extends JFrame {
 	 */
 	private Component createList() {
 		JList<GeometricalObject> list = new JList<>(new DrawingObjectListModel(model));
-
 		list.addMouseListener(addDoubleClickListener());
 		list.addKeyListener(addKeyListener());
 
@@ -152,15 +154,16 @@ public class JVDraw extends JFrame {
 
 			@SuppressWarnings("unchecked")
 			@Override
-			public void keyPressed(KeyEvent arg0) {
-				int keyCode = arg0.getKeyCode();
+			public void keyPressed(KeyEvent e) {
+				int keyCode = e.getKeyCode();
 
 				if (keyCode == KeyEvent.VK_DELETE) {
-					model.remove(((JList<GeometricalObject>) arg0.getSource()).getSelectedValue());
-				} else if (keyCode == KeyEvent.VK_PLUS) {
-					System.out.println("Plus");
+					model.remove(((JList<GeometricalObject>) e.getSource()).getSelectedValue());
+				} else if (keyCode == 61 || keyCode == 107) { // for some reasons,constant 'KeyEvent.VK_PLUS' doesn't
+																// want to work,so I had to write like that :/
+					model.changeOrder(((JList<GeometricalObject>) e.getSource()).getSelectedValue(), -1);
 				} else if (keyCode == KeyEvent.VK_MINUS) {
-					System.out.println("Minus");
+					model.changeOrder(((JList<GeometricalObject>) e.getSource()).getSelectedValue(), 1);
 				}
 
 			}
@@ -217,46 +220,51 @@ public class JVDraw extends JFrame {
 	 * @return {@link JPanel} with components for top frame
 	 */
 	private JPanel createPanel(JColorArea fgColorArea, JColorArea bgColorArea) {
-		JPanel panel = new JPanel();
+		JPanel panel = new JPanel(new GridLayout(2, 1));
 
 		JMenu file = new JMenu("File");
 		JMenuBar bar = new JMenuBar();
 		panel.add(bar, JPanel.LEFT_ALIGNMENT);
 		bar.add(file);
 
-		JMenuItem open = new JMenuItem("Open");
-		open.addActionListener(new OpenFile(model));
-		file.add(open);
-
-		JMenuItem export = new JMenuItem("Export");
-		export.addActionListener(new Export(model));
-		file.add(export);
-
-		JMenuItem saveAs = new JMenuItem("Save As");
-		saveAs.addActionListener(new SaveAs(model));
-		file.add(saveAs);
-
-		JMenuItem save = new JMenuItem("Save");
-		save.addActionListener(new Save(model));
-		file.add(save);
-
-		JMenuItem exit = new JMenuItem("Exit");
-		exit.addActionListener(new Exit());
-		file.add(exit);
+		addItem(file, "Open", new OpenFile(model));
+		addItem(file, "Export", new Export(model));
+		addItem(file, "Save As", new SaveAs(model));
+		addItem(file, "Save", new Save(model));
+		addItem(file, "Exit", new Exit(model));
 
 		JToolBar toolBar = new JToolBar();
 		panel.add(toolBar);
 
+		toolBar.add(new JLabel("Draw:"));
 		toolBar.add(fgColorArea);
+		toolBar.add(new JLabel("Fill:"));
 		toolBar.add(bgColorArea);
 		List<AbstractButton> list = makeButtons();
 		group = new ButtonGroup();
+		toolBar.add(new JLabel("Components: "));
 		for (AbstractButton comp : list) {
 			toolBar.add(comp);
 			group.add(comp);
 		}
 
 		return panel;
+	}
+
+	/**
+	 * Method adds item to {@link JMenu}
+	 * 
+	 * @param menu
+	 *            - menu where we put our buttons
+	 * @param string
+	 *            - button name
+	 * @param action
+	 *            - button action
+	 */
+	private void addItem(JMenu menu, String string, AbstractAction action) {
+		JMenuItem item = new JMenuItem(string);
+		item.addActionListener(action);
+		menu.add(item);
 	}
 
 	/**
@@ -269,18 +277,18 @@ public class JVDraw extends JFrame {
 
 		JToggleButton line = new JToggleButton("Line");
 		line.addActionListener(e -> {
-			currentState = new Line(fgColorArea);
+			currentState = new Line(fgColorArea.getCurrentColor());
 		});
 		list.add(line);
 		JToggleButton circle = new JToggleButton("Circle");
 		circle.addActionListener(e -> {
-			currentState = new Circle(fgColorArea);
+			currentState = new Circle(fgColorArea.getCurrentColor());
 		});
 		list.add(circle);
 
 		JToggleButton filledCircle = new JToggleButton("Filled circle");
 		filledCircle.addActionListener(e -> {
-			currentState = new FilledCircle(bgColorArea, fgColorArea);
+			currentState = new FilledCircle(bgColorArea.getCurrentColor(), fgColorArea.getCurrentColor());
 
 		});
 		list.add(filledCircle);
@@ -303,11 +311,11 @@ public class JVDraw extends JFrame {
 	 */
 	public void reset() {
 		if (currentState instanceof Line) {
-			currentState = new Line(fgColorArea);
+			currentState = new Line(fgColorArea.getCurrentColor());
 		} else if (currentState instanceof Circle && !(currentState instanceof FilledCircle)) {
-			currentState = new Circle(fgColorArea);
+			currentState = new Circle(fgColorArea.getCurrentColor());
 		} else {
-			currentState = new FilledCircle(fgColorArea, bgColorArea);
+			currentState = new FilledCircle(fgColorArea.getCurrentColor(), bgColorArea.getCurrentColor());
 		}
 	}
 

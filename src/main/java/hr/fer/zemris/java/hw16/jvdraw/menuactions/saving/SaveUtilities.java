@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Point;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -19,7 +18,22 @@ import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.components.Circle;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.components.FilledCircle;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.components.Line;
 
+/**
+ * Class contains utility methods for saving process
+ * 
+ * @author Mihael
+ *
+ */
 public abstract class SaveUtilities {
+	/**
+	 * Method goes trough every object,turn its parameters into text,and writes it
+	 * into file
+	 * 
+	 * @param path
+	 *            - path to file
+	 * @param model
+	 *            - drawing model
+	 */
 	public static void saveFile(Path path, DrawingModel model) {
 		StringBuilder builder = new StringBuilder();
 
@@ -67,10 +81,10 @@ public abstract class SaveUtilities {
 	 *            - data for store
 	 */
 	private static void writeData(Path path, String data) {
-		int index = (path.toString().lastIndexOf(".")) != -1 ? path.toString().lastIndexOf(".")
-				: (path.toString().length() - 1);
+		System.out.println(path.toString().lastIndexOf("."));
 
-		path = Paths.get(path.toString().substring(0, index) + ".jvd");
+		path = Paths.get(path.toString() + ".jvd");
+		System.out.println(path);
 
 		try (BufferedWriter writer = new BufferedWriter(Files.newBufferedWriter(path))) {
 			writer.write(data);
@@ -79,6 +93,12 @@ public abstract class SaveUtilities {
 		}
 	}
 
+	/**
+	 * Method shows exit dialog in case when we want to exit program but have some
+	 * unsaved data
+	 * 
+	 * @return <code>true</code> if we want save data,otherwise <code>false</code>
+	 */
 	public static boolean showExitDialog() {
 		if (JOptionPane.showConfirmDialog(null, "There are still unsaved objects. Do you want to save it?", "Exit",
 				JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
@@ -88,6 +108,13 @@ public abstract class SaveUtilities {
 		return false;
 	}
 
+	/**
+	 * Method turns {@link GeometricalObject} parameters into text
+	 * 
+	 * @param object
+	 *            - {@link GeometricalObject}
+	 * @return parameters in textual format
+	 */
 	private static String getText(GeometricalObject object) {
 		if (object instanceof Line) {
 			Point start = ((Line) object).getStartPoint();
@@ -102,13 +129,11 @@ public abstract class SaveUtilities {
 			Color color = ((Circle) object).getColor();
 			Color colorFill = (object instanceof FilledCircle) ? ((FilledCircle) object).getFillColor() : null;
 
-			return (object instanceof FilledCircle) ? "FCIRCLE "
-					: "CIRCLE " + center.x + " " + center.y + " " + radius + " " + color.getRed() + " "
-							+ color.getGreen() + " " + color.getBlue()
-							+ ((object instanceof FilledCircle)
-									? (" " + colorFill.getRed() + " " + colorFill.getGreen() + " "
-											+ colorFill.getBlue())
-									: "");
+			return ((object instanceof FilledCircle) ? "FCIRCLE " : "CIRCLE ") + center.x + " " + center.y + " "
+					+ (int)radius + " " + color.getRed() + " " + color.getGreen() + " " + color.getBlue()
+					+ ((object instanceof FilledCircle)
+							? (" " + colorFill.getRed() + " " + colorFill.getGreen() + " " + colorFill.getBlue())
+							: "");
 		}
 
 		return null;

@@ -1,30 +1,43 @@
 package hr.fer.zemris.java.hw16.jvdraw.menuactions.saving;
 
-import java.awt.Color;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-
 import javax.swing.AbstractAction;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-
 import hr.fer.zemris.java.hw16.jvdraw.drawing.interfaces.DrawingModel;
-import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.GeometricalObject;
-import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.components.Circle;
-import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.components.FilledCircle;
-import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.components.Line;
 
+/**
+ * Class represents saving process when path doesn't exist or we just want save
+ * file to different location
+ * 
+ * @author Mihael
+ *
+ */
 public class SaveAs extends AbstractAction {
+	/**
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
+	 * Drawing model
+	 */
 	private DrawingModel model;
 
+	/**
+	 * Default constructor
+	 * 
+	 * @param model
+	 *            - drawing model
+	 */
 	public SaveAs(DrawingModel model) {
 		this.model = model;
 	}
 
+	/**
+	 * Method performs save as process
+	 * 
+	 * @param arg0
+	 *            - action event
+	 */
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		Path path = SaveUtilities.getSavingPath();

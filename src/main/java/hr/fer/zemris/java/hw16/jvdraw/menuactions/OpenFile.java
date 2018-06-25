@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.Objects;
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 
+import hr.fer.zemris.java.hw16.jvdraw.JVDraw.ErrorClass;
 import hr.fer.zemris.java.hw16.jvdraw.drawing.interfaces.DrawingModel;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.GeometricalObject;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.components.Circle;
@@ -70,6 +72,8 @@ public class OpenFile extends AbstractAction {
 				model.add(object);
 			}
 
+		} catch (NoSuchFileException e) {
+			ErrorClass.showError(e.getMessage() + " doesn't exist!");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -1,11 +1,13 @@
 package hr.fer.zemris.java.hw16.jvdraw.graphicalobject.components;
 
+import static java.lang.Math.pow;
+import static java.lang.Math.sqrt;
+
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.event.MouseEvent;
 
-import hr.fer.zemris.java.hw16.jvdraw.color.ColorChangeListener;
-import hr.fer.zemris.java.hw16.jvdraw.color.IColorProvider;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.editors.FilledCircleEditor;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.editors.GeometricalObjectEditor;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.interfaces.Tool;
@@ -21,38 +23,22 @@ import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.visitors.GeometricalObject
  */
 public class FilledCircle extends Circle implements Tool {
 	/**
-	 * Provider contains selected color for painting
-	 */
-	private IColorProvider fillColorProvider;
-
-	/**
 	 * Color for fill circle
 	 */
 	private Color fillColor;
 
 	/**
-	 * Identification number
-	 */
-	private int id;
-
-	/**
 	 * Constructor creates new {@link FilledCircle}
 	 * 
-	 * @param fillColorProvider
-	 *            - provider which contains color for circle filling
-	 * @param drawColorProvider
-	 *            - provider which contains color for circle drawing
+	 * @param color
+	 *            - color for drawing
+	 * @param colorFill
+	 *            - color for painting
+	 * 
 	 */
-	public FilledCircle(IColorProvider fillColorProvider, IColorProvider drawColorProvider) {
-		super(drawColorProvider);
-		this.fillColorProvider = fillColorProvider;
-		this.fillColorProvider.addColorChangeListener(new ColorChangeListener() {
-			@Override
-			public void newColorSelected(IColorProvider source, Color oldColor, Color newColor) {
-				fillColor = newColor;
-			}
-		});
-		this.fillColor = this.fillColorProvider.getCurrentColor();
+	public FilledCircle(Color color, Color colorFill) {
+		super(color);
+		this.fillColor = colorFill;
 	}
 
 	/**
@@ -98,12 +84,23 @@ public class FilledCircle extends Circle implements Tool {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (getCenter() == null) {
-			id = Constants.FILLED++;
 			setCenter(e.getPoint());
 			setRadius(0);
 		} else {
 			setRadius(super.calculateRadius(e.getPoint()));
 		}
+
+	}
+
+	/**
+	 * Method calculates distance between center point and current focused point<br>
+	 * 
+	 * @param point
+	 *            - current focused point
+	 * @return distance
+	 */
+	protected double calculateRadius(Point point) {
+		return sqrt(pow(getCenter().x - point.x, 2) + pow(getCenter().y - point.y, 2));
 	}
 
 	/**
@@ -152,6 +149,7 @@ public class FilledCircle extends Circle implements Tool {
 	 */
 	@Override
 	public String toString() {
-		return "FCircle " + id;
+		return "Filled Circle (" + getCenter().x + "," + getCenter().y + ")," + (int) getRadius() + String
+				.format(",#%02x%02x%02x", fillColor.getRed(), fillColor.getGreen(), fillColor.getBlue()).toUpperCase();
 	}
 }

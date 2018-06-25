@@ -1,42 +1,63 @@
 package hr.fer.zemris.java.hw16.jvdraw.menuactions;
 
-import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GridLayout;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.List;
-
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
-import javax.swing.JComboBox;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.filechooser.FileFilter;
 
 import hr.fer.zemris.java.hw16.jvdraw.drawing.interfaces.DrawingModel;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.visitors.GeometricalObjectBBCalculator;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.visitors.GeometricalObjectPainter;
 
+/**
+ * Class provides implementation for exporting process into image.Supported
+ * image formats are: <br>
+ * <ol>
+ * <li>png</li>
+ * <li>jpg</li>
+ * <li>gif</li>
+ * </ol>
+ * 
+ * @author Mihael
+ *
+ */
 public class Export extends AbstractAction {
 
+	/**
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
+	 * Drawing model
+	 */
 	private DrawingModel model;
 
+	/**
+	 * Default constructor
+	 * 
+	 * @param model
+	 *            - drawing model
+	 */
 	public Export(DrawingModel model) {
 		this.model = model;
 	}
 
-	@SuppressWarnings("unchecked")
+	/**
+	 * Method represents implementation of exporting process
+	 * 
+	 * @param event
+	 *            - action event
+	 */
 	@Override
-	public void actionPerformed(ActionEvent arg0) {
+	public void actionPerformed(ActionEvent event) {
 		Path path = getFormatAndPath();
 
 		// bounding box
@@ -71,7 +92,9 @@ public class Export extends AbstractAction {
 
 	/**
 	 * Method returns image type from path
-	 * @param path - path 
+	 * 
+	 * @param path
+	 *            - path
 	 * @return image format
 	 */
 	private String getFormat(Path path) {
@@ -86,6 +109,11 @@ public class Export extends AbstractAction {
 		return "png";
 	}
 
+	/**
+	 * Method returns path where we want to store image
+	 * 
+	 * @return path to location
+	 */
 	private Path getFormatAndPath() {
 
 		JFileChooser fc = new JFileChooser();

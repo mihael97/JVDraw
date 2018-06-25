@@ -8,8 +8,6 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 
-import hr.fer.zemris.java.hw16.jvdraw.color.ColorChangeListener;
-import hr.fer.zemris.java.hw16.jvdraw.color.IColorProvider;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.GeometricalObject;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.editors.CircleEditor;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.editors.GeometricalObjectEditor;
@@ -32,31 +30,20 @@ public class Circle extends GeometricalObject implements Tool {
 	 * Circle radius
 	 */
 	private double radius;
-	/**
-	 * Provider contains color for drawing
-	 */
-	private IColorProvider drawColorProvider;
+
 	/**
 	 * Color for drawing
 	 */
 	private Color color;
 
 	/**
-	 * Identification number
-	 */
-	private int id;
-
-	/**
 	 * Constructor
 	 * 
-	 * @param drawColorProvider
+	 * @param color
 	 *            - provider that contains color type for drawing
 	 */
-	public Circle(IColorProvider drawColorProvider) {
-		super();
-		this.drawColorProvider = drawColorProvider;
-		addListener();
-		this.color = drawColorProvider.getCurrentColor();
+	public Circle(Color color) {
+		this.color = color;
 	}
 
 	/**
@@ -72,23 +59,9 @@ public class Circle extends GeometricalObject implements Tool {
 	 *            - color
 	 */
 	public Circle(int xCenter, int yCenter, double radius, Color color) {
-		addListener();
 		this.center = new Point(xCenter, yCenter);
 		this.radius = radius;
 		this.color = color;
-	}
-
-	/**
-	 * Method adds color change listener
-	 */
-	protected void addListener() {
-		drawColorProvider.addColorChangeListener(new ColorChangeListener() {
-
-			@Override
-			public void newColorSelected(IColorProvider source, Color oldColor, Color newColor) {
-				color = newColor;
-			}
-		});
 	}
 
 	/**
@@ -129,7 +102,6 @@ public class Circle extends GeometricalObject implements Tool {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (center == null) {
-			id= Constants.CIRCLE++;
 			center = e.getPoint();
 			this.radius = 0;
 		} else {
@@ -208,7 +180,6 @@ public class Circle extends GeometricalObject implements Tool {
 	 *            - center
 	 */
 	public void setCenter(Point center) {
-		System.out.println(center);
 		this.center = center;
 	}
 
@@ -257,7 +228,7 @@ public class Circle extends GeometricalObject implements Tool {
 	 */
 	@Override
 	public String toString() {
-		return "Circle " + id;
+		return "Circle (" + center.x + "," + center.y + ")," + (int) radius;
 	}
 
 }
