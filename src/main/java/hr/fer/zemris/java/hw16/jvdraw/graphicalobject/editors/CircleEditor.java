@@ -69,20 +69,21 @@ public class CircleEditor extends GeometricalObjectEditor {
 	 */
 	@Override
 	public void checkEditing() {
-		int[] array = Util.getPoint((JPanel) this.getComponentAt(1, 2));
-		xCenter = array[0];
-		yCenter = array[1];
+		int[] array = Util.getPoint((JPanel) this.getComponents()[1]);
+		this.xCenter = array[0];
+		this.yCenter = array[1];
 
-		radius = Double.parseDouble(((JTextField) (this.getComponentAt(2, 2))).getText());
+		this.radius = Double.parseDouble(((JTextField) (this.getComponents()[3])).getText());
 
 		if (!Util.checkRadius(radius)) {
 			throw new IllegalArgumentException("Invalid radius argument!");
 		}
 
-		JPanel RGBPanel = (JPanel) (this.getComponentAt(3, 2));
-		red = Integer.parseInt(((JTextField) (RGBPanel.getComponentAt(1, 1))).getText());
-		green = Integer.parseInt(((JTextField) (RGBPanel.getComponentAt(2, 1))).getText());
-		blue = Integer.parseInt(((JTextField) (RGBPanel.getComponentAt(3, 1))).getText());
+		JPanel RGBPanel = (JPanel) (this.getComponents()[5]);
+		int[] colorArray = Util.getColorFromPanel(RGBPanel);
+		this.red = colorArray[0];
+		this.green = colorArray[1];
+		this.blue = colorArray[2];
 
 		if (!Util.checkRGB(red, green, blue)) {
 			throw new IllegalArgumentException("invalid color!");

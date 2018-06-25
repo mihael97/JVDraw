@@ -21,6 +21,7 @@ public class ColorLabel extends JLabel implements ColorChangeListener {
 	 * serialVersionUID
 	 */
 	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Color provider for background color
 	 */
@@ -33,25 +34,24 @@ public class ColorLabel extends JLabel implements ColorChangeListener {
 	/**
 	 * Constructor accepts references of provider to background and foreground color
 	 * and initializes new color label which shows informations about current colors
-	 * 
+	 *
 	 * @param backgroundProvider
 	 *            - background color provider
 	 * @param foregroundProvider
 	 *            - foreground color provider
 	 */
 	public ColorLabel(IColorProvider backgroundProvider, IColorProvider foregroundProvider) {
+		super("Mihael");
 		this.backgroudProvider = backgroundProvider;
 		this.foregroundProvider = foregroundProvider;
 
 		this.backgroudProvider.addColorChangeListener(this);
 		this.foregroundProvider.addColorChangeListener(this);
-
-		repaint();
 	}
 
 	/**
 	 * Method is called when color change happened
-	 * 
+	 *
 	 * @param source
 	 *            - place where color changed
 	 * @param oldColor
@@ -61,19 +61,20 @@ public class ColorLabel extends JLabel implements ColorChangeListener {
 	 */
 	@Override
 	public void newColorSelected(IColorProvider source, Color oldColor, Color newColor) {
-		repaint();
+		if (newColor != null) {
+			repaint();
+		}
 	}
 
 	/**
 	 * Method accepts {@link Graphics} and sets updates informations of chosen
 	 * colors
-	 * 
+	 *
 	 * @param graphics
 	 *            - graphics
 	 */
 	@Override
 	protected void paintComponent(Graphics graphics) {
-		System.out.println("TU SAM!");
 		Color front = foregroundProvider.getCurrentColor();
 		Color back = backgroudProvider.getCurrentColor();
 
@@ -82,5 +83,4 @@ public class ColorLabel extends JLabel implements ColorChangeListener {
 
 		super.paintComponent(graphics);
 	}
-
 }

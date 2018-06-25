@@ -1,5 +1,7 @@
 package hr.fer.zemris.java.hw16.jvdraw.menuactions;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Rectangle;
@@ -13,10 +15,12 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.filechooser.FileFilter;
 
 import hr.fer.zemris.java.hw16.jvdraw.drawing.interfaces.DrawingModel;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.visitors.GeometricalObjectBBCalculator;
@@ -33,18 +37,7 @@ public class Export extends AbstractAction {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		JPanel panel = createJPanel();
-
 		Path path = getFormatAndPath();
-
-		JFileChooser fc = new JFileChooser();
-		fc.setDialogTitle("Choose path:");
-
-		if (fc.showOpenDialog(null) != JFileChooser.APPROVE_OPTION) {
-			return;
-		}
-
-		File file = fc.getSelectedFile();
 
 		// bounding box
 		GeometricalObjectBBCalculator calc = new GeometricalObjectBBCalculator();
@@ -67,12 +60,8 @@ public class Export extends AbstractAction {
 
 		g.dispose();
 
-		System.out.println(panel.getComponentCount());
-		String string = (String) (((JLabel) panel.getComponentAt(1, 1)).getText());
-		System.out.println(string);
-
 		try {
-			ImageIO.write(image, (String) ((JComboBox<String>) panel.getComponentAt(1, 2)).getSelectedItem(), file);
+			ImageIO.write(image, getFormat(path), path.toFile());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -80,38 +69,55 @@ public class Export extends AbstractAction {
 		JOptionPane.showMessageDialog(null, "Image has been exported!");
 	}
 
-	private Path getFormatAndPath() {
-		Path forReturn = null;
-		JFileChooser fc = new JFileChooser();
-		fc.setDialogTitle("Choose path(extension must be png,jpg or gif");
-		do {
-			if (fc.showSaveDialog(null) != JFileChooser.APPROVE_OPTION) {
-				return null;
-			}
+	/**
+	 * Method returns image type from path
+	 * @param path - path 
+	 * @return image format
+	 */
+	private String getFormat(Path path) {
+		if (path.endsWith(".jpg")) {
+			return "jpg";
+		}
 
-			forReturn = fc.getSelectedFile().toPath();
-			String ext = fc.toString().substring(fc.toString().lastIndexOf(".") + 1);
+		if (path.endsWith(".gif")) {
+			return "gif";
+		}
 
-			if (ext.equals("gif") || ext.equals("png") || ext.equals("jpg")) {
-				break;
-			}
-
-		} while (true);
-
-		System.out.println(forReturn.toString());
-		return forReturn;
+		return "png";
 	}
 
-	private JPanel createJPanel() {
-		JPanel panel = new JPanel(new GridLayout(1, 2));
+	private Path getFormatAndPath() {
 
-		panel.add(new JLabel("Select format: "));
-		JComboBox<String> box = new JComboBox<>(new String[] { "png", "gif", "jpg" });
-		panel.add(box);
+		JFileChooser fc = new JFileChooser();
+		fc.setFileFilter(new FileFilter() {
 
-		System.out.println(panel.getComponentCount());
+			@Override
+			public String getDescription() {
+				return "gif,jpg,png";
+			}
 
-		return panel;
+			@Override
+			public boolean accept(File arg0) {
+				String fileName = arg0.toString().toLowerCase();
+
+				if (fileName.endsWith(".jpg") || fileName.endsWith(".gif") || fileName.endsWith(".png")) {
+					return true;
+				}
+
+				return false;
+
+			}
+		});
+
+		fc.setDialogTitle("Choose path");
+		if (fc.showSaveDialog(null) != JFileChooser.APPROVE_OPTION) {
+			return null;
+		}
+
+		File file = fc.getSelectedFile();
+		Path path = file.toPath();
+
+		return path;
 	}
 
 }

@@ -43,6 +43,7 @@ import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.editors.GeometricalObjectE
 import hr.fer.zemris.java.hw16.jvdraw.menuactions.Exit;
 import hr.fer.zemris.java.hw16.jvdraw.menuactions.Export;
 import hr.fer.zemris.java.hw16.jvdraw.menuactions.OpenFile;
+import hr.fer.zemris.java.hw16.jvdraw.menuactions.saving.Save;
 import hr.fer.zemris.java.hw16.jvdraw.menuactions.saving.SaveAs;
 
 /**
@@ -144,7 +145,7 @@ public class JVDraw extends JFrame {
 	 * <li>delete button - changes item priority to lower</li>
 	 * </ol>
 	 * 
-	 * @return
+	 * @return prepared KeyListener
 	 */
 	private KeyListener addKeyListener() {
 		return new KeyAdapter() {
@@ -198,7 +199,7 @@ public class JVDraw extends JFrame {
 						editor.checkEditing();
 						editor.acceptEditing();
 					} catch (Exception ex) {
-
+						ErrorClass.showError(ex.getLocalizedMessage());
 					}
 				}
 			}
@@ -235,12 +236,16 @@ public class JVDraw extends JFrame {
 		saveAs.addActionListener(new SaveAs(model));
 		file.add(saveAs);
 
+		JMenuItem save = new JMenuItem("Save");
+		save.addActionListener(new Save(model));
+		file.add(save);
+
 		JMenuItem exit = new JMenuItem("Exit");
 		exit.addActionListener(new Exit());
 		file.add(exit);
 
 		JToolBar toolBar = new JToolBar();
-		panel.add(toolBar, JToolBar.LEFT_ALIGNMENT);
+		panel.add(toolBar);
 
 		toolBar.add(fgColorArea);
 		toolBar.add(bgColorArea);

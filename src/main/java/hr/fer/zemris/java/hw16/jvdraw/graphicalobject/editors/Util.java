@@ -56,8 +56,8 @@ public abstract class Util {
 	 */
 	public static int[] getPoint(JPanel panel) {
 		int[] forReturn = new int[2];
-		forReturn[0] = Integer.parseInt(((JTextField) (panel.getComponentAt(1, 1))).getText());
-		forReturn[1] = Integer.parseInt(((JTextField) (panel.getComponentAt(2, 1))).getText());
+		forReturn[0] = Integer.parseInt(((JTextField) (panel.getComponents()[0])).getText());
+		forReturn[1] = Integer.parseInt(((JTextField) (panel.getComponents()[1])).getText());
 
 		return forReturn;
 	}
@@ -73,5 +73,24 @@ public abstract class Util {
 		JTextField field = new JTextField(3);
 		field.setText(text);
 		return field;
+	}
+
+	/**
+	 * Method accepts {@link JPanel} with 3 {@link JTextField} where every
+	 * {@link JTextField} represents one of color components<br>
+	 * Value for return is array where integer values of colors are stored in RGB
+	 * format(on index <code>0</code> is <code>red</code>,on index <code>1</code> is
+	 * <code>green</code> and on index <code>2</code> is <code>blue</code>
+	 * 
+	 * @param panel
+	 *            - panel with colors
+	 * @return array with integer values of color
+	 */
+	public static int[] getColorFromPanel(JPanel panel) {
+		int[] array = { 0, 0, 0 };
+		array[0] = Integer.parseInt(((JTextField) (panel.getComponents()[0])).getText());
+		array[1] = Integer.parseInt(((JTextField) (panel.getComponents()[1])).getText());
+		array[2] = Integer.parseInt(((JTextField) (panel.getComponents()[2])).getText());
+		return array;
 	}
 }

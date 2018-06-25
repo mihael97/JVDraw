@@ -7,7 +7,6 @@ import java.util.Objects;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.components.Line;
 
 /**
@@ -72,19 +71,20 @@ public class LineEditor extends GeometricalObjectEditor {
 	 */
 	@Override
 	public void checkEditing() {
-		int[] array = Util.getPoint((JPanel) this.getComponentAt(1, 2));
+		int[] array = Util.getPoint((JPanel) this.getComponents()[1]);
 
 		xStart = array[0];
 		yStart = array[1];
 
-		array = Util.getPoint((JPanel) this.getComponentAt(2, 2));
+		array = Util.getPoint((JPanel) this.getComponents()[3]);
 		xEnd = array[0];
 		yEnd = array[1];
 
-		JPanel RGBPanel = (JPanel) (this.getComponentAt(3, 2));
-		red = Integer.parseInt(((JTextField) (RGBPanel.getComponentAt(1, 1))).getText());
-		green = Integer.parseInt(((JTextField) (RGBPanel.getComponentAt(2, 1))).getText());
-		blue = Integer.parseInt(((JTextField) (RGBPanel.getComponentAt(3, 1))).getText());
+		JPanel RGBPanel = (JPanel) (this.getComponents()[5]);
+		array = Util.getColorFromPanel(RGBPanel);
+		this.red = array[0];
+		this.green = array[1];
+		this.blue = array[2];
 
 		if (!Util.checkRGB(red, green, blue)) {
 			throw new IllegalArgumentException("invalid color!");
@@ -117,8 +117,8 @@ public class LineEditor extends GeometricalObjectEditor {
 		this.add(new JLabel("End:"));
 		JPanel panel2 = new JPanel(new GridLayout(1, 2));
 		this.add(panel2);
-		panel2.add(Util.makeField(String.valueOf(line.getStartPoint().x)));
-		panel2.add(Util.makeField(String.valueOf(line.getStartPoint().y)));
+		panel2.add(Util.makeField(String.valueOf(line.getEndPoint().x)));
+		panel2.add(Util.makeField(String.valueOf(line.getEndPoint().y)));
 
 		this.add(new JLabel("Color"));
 		JPanel colorPanel = new JPanel(new GridLayout(1, 3));

@@ -208,6 +208,7 @@ public class Circle extends GeometricalObject implements Tool {
 	 *            - center
 	 */
 	public void setCenter(Point center) {
+		System.out.println(center);
 		this.center = center;
 	}
 

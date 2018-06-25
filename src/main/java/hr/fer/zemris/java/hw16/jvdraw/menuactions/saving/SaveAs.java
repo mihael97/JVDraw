@@ -28,41 +28,7 @@ public class SaveAs extends AbstractAction {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		Path path = SaveUtilities.getSavingPath();
-		StringBuilder builder = new StringBuilder();
-
-		for (int i = 0, len = model.getSize(); i < len; i++) {
-			builder.append(getText(model.getObject(i)) + "\n");
-		}
-
-		SaveUtilities.writeData(path, builder.toString());
-		SaveFileInfo.setUnModified();
+		SaveUtilities.saveFile(path, model);
 		SaveFileInfo.setPath(path);
 	}
-
-	private String getText(GeometricalObject object) {
-		if (object instanceof Line) {
-			Point start = ((Line) object).getStartPoint();
-			Point end = ((Line) object).getEndPoint();
-			Color color = ((Line) object).getColor();
-
-			return "LINE " + start.x + " " + start.y + " " + end.x + " " + end.y + " " + color.getRed() + " "
-					+ color.getGreen() + " " + color.getBlue();
-		} else if (object instanceof Circle) {
-			Point center = ((Circle) object).getCenter();
-			double radius = ((Circle) object).getRadius();
-			Color color = ((Circle) object).getColor();
-			Color colorFill = (object instanceof FilledCircle) ? ((FilledCircle) object).getFillColor() : null;
-
-			return (object instanceof FilledCircle) ? "FCIRCLE "
-					: "CIRCLE " + center.x + " " + center.y + " " + radius + " " + color.getRed() + " "
-							+ color.getGreen() + " " + color.getBlue()
-							+ ((object instanceof FilledCircle)
-									? (" " + colorFill.getRed() + " " + colorFill.getGreen() + " "
-											+ colorFill.getBlue())
-									: "");
-		}
-
-		return null;
-	}
-
 }

@@ -82,29 +82,31 @@ public class FilledCircleEditor extends GeometricalObjectEditor {
 	 */
 	@Override
 	public void checkEditing() {
-		int[] array = Util.getPoint((JPanel) this.getComponentAt(1, 2));
+		int[] array = Util.getPoint((JPanel) this.getComponents()[1]);
 		this.xCenter = array[0];
 		this.yCenter = array[1];
 
-		this.radius = Double.parseDouble(((JTextField) (this.getComponentAt(2, 2))).getText());
+		this.radius = Double.parseDouble(((JTextField) (this.getComponents()[3])).getText());
 
 		if (!Util.checkRadius(radius)) {
 			throw new IllegalArgumentException("Invalid radius argument!");
 		}
 
-		JPanel RGBPanel = (JPanel) (this.getComponentAt(2, 3));
-		this.redDraw = Integer.parseInt(((JTextField) (RGBPanel.getComponentAt(1, 1))).getText());
-		this.greenDraw = Integer.parseInt(((JTextField) (RGBPanel.getComponentAt(2, 1))).getText());
-		this.blueDraw = Integer.parseInt(((JTextField) (RGBPanel.getComponentAt(3, 1))).getText());
+		JPanel RGBPanel = (JPanel) (this.getComponents()[5]);
+		int[] colorArray = Util.getColorFromPanel(RGBPanel);
+		this.redDraw = colorArray[0];
+		this.greenDraw = colorArray[1];
+		this.blueDraw = colorArray[2];
 
 		if (!Util.checkRGB(redDraw, greenDraw, blueDraw)) {
 			throw new IllegalArgumentException("invalid color!");
 		}
 
-		RGBPanel = (JPanel) (this.getComponentAt(2, 4));
-		this.redFill = Integer.parseInt(((JTextField) (RGBPanel.getComponentAt(1, 1))).getText());
-		this.greenFill = Integer.parseInt(((JTextField) (RGBPanel.getComponentAt(2, 1))).getText());
-		this.blueFill = Integer.parseInt(((JTextField) (RGBPanel.getComponentAt(3, 1))).getText());
+		RGBPanel = (JPanel) (this.getComponents()[7]);
+		colorArray = Util.getColorFromPanel(RGBPanel);
+		this.redFill = colorArray[0];
+		this.greenFill = colorArray[1];
+		this.blueFill = colorArray[2];
 
 		if (!Util.checkRGB(redFill, greenFill, blueFill)) {
 			throw new IllegalArgumentException("invalid color!");
