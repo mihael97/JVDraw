@@ -50,7 +50,7 @@ import hr.fer.zemris.java.hw16.jvdraw.menuactions.saving.Save;
 import hr.fer.zemris.java.hw16.jvdraw.menuactions.saving.SaveAs;
 
 /**
- * Class represents main class where graphical interface initialized
+ * Class represents main class where graphical interface is initialized
  * 
  * @author Mihael
  *
@@ -277,18 +277,18 @@ public class JVDraw extends JFrame {
 
 		JToggleButton line = new JToggleButton("Line");
 		line.addActionListener(e -> {
-			currentState = new Line(fgColorArea.getCurrentColor());
+			currentState = new Line(fgColorArea);
 		});
 		list.add(line);
 		JToggleButton circle = new JToggleButton("Circle");
 		circle.addActionListener(e -> {
-			currentState = new Circle(fgColorArea.getCurrentColor());
+			currentState = new Circle(fgColorArea);
 		});
 		list.add(circle);
 
 		JToggleButton filledCircle = new JToggleButton("Filled circle");
 		filledCircle.addActionListener(e -> {
-			currentState = new FilledCircle(bgColorArea.getCurrentColor(), fgColorArea.getCurrentColor());
+			currentState = new FilledCircle(fgColorArea, bgColorArea);
 
 		});
 		list.add(filledCircle);
@@ -311,11 +311,11 @@ public class JVDraw extends JFrame {
 	 */
 	public void reset() {
 		if (currentState instanceof Line) {
-			currentState = new Line(fgColorArea.getCurrentColor());
+			currentState = new Line(fgColorArea);
 		} else if (currentState instanceof Circle && !(currentState instanceof FilledCircle)) {
-			currentState = new Circle(fgColorArea.getCurrentColor());
+			currentState = new Circle(fgColorArea);
 		} else {
-			currentState = new FilledCircle(fgColorArea.getCurrentColor(), bgColorArea.getCurrentColor());
+			currentState = new FilledCircle(fgColorArea, bgColorArea);
 		}
 	}
 

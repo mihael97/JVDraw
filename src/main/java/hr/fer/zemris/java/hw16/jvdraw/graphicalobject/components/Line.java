@@ -5,6 +5,8 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 
+import hr.fer.zemris.java.hw16.jvdraw.color.ColorChangeListener;
+import hr.fer.zemris.java.hw16.jvdraw.color.IColorProvider;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.GeometricalObject;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.editors.GeometricalObjectEditor;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.editors.LineEditor;
@@ -55,11 +57,18 @@ public class Line extends GeometricalObject implements Tool {
 	/**
 	 * Default constructor
 	 * 
-	 * @param color
+	 * @param fgColorArea
 	 *            - {@link Color} for drawing
 	 */
-	public Line(Color color) {
-		this.color = color;
+	public Line(IColorProvider fgColorArea) {
+		this.color = fgColorArea.getCurrentColor();
+		fgColorArea.addColorChangeListener(new ColorChangeListener() {
+
+			@Override
+			public void newColorSelected(IColorProvider source, Color oldColor, Color newColor) {
+				Line.this.color = newColor;
+			}
+		});
 	}
 
 	/**

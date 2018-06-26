@@ -13,6 +13,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
+import hr.fer.zemris.java.hw16.jvdraw.JVDraw.ErrorClass;
 import hr.fer.zemris.java.hw16.jvdraw.drawing.interfaces.DrawingModel;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.visitors.GeometricalObjectBBCalculator;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.visitors.GeometricalObjectPainter;
@@ -71,7 +72,7 @@ public class Export extends AbstractAction {
 		BufferedImage image = new BufferedImage(box.width, box.height, BufferedImage.TYPE_3BYTE_BGR);
 
 		Graphics2D g = image.createGraphics();
-		g.translate(-box.width, -box.height);
+		g.translate(-box.x, -box.y);
 
 		GeometricalObjectPainter painter = new GeometricalObjectPainter(g);
 
@@ -84,7 +85,7 @@ public class Export extends AbstractAction {
 		try {
 			ImageIO.write(image, getFormat(path), path.toFile());
 		} catch (IOException e) {
-			e.printStackTrace();
+			ErrorClass.showError(e.getLocalizedMessage());
 		}
 
 		JOptionPane.showMessageDialog(null, "Image has been exported!");

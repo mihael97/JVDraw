@@ -8,6 +8,8 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 
+import hr.fer.zemris.java.hw16.jvdraw.color.ColorChangeListener;
+import hr.fer.zemris.java.hw16.jvdraw.color.IColorProvider;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.GeometricalObject;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.editors.CircleEditor;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.editors.GeometricalObjectEditor;
@@ -39,11 +41,18 @@ public class Circle extends GeometricalObject implements Tool {
 	/**
 	 * Constructor
 	 * 
-	 * @param color
+	 * @param fgColorArea
 	 *            - provider that contains color type for drawing
 	 */
-	public Circle(Color color) {
-		this.color = color;
+	public Circle(IColorProvider fgColorArea) {
+		this.color = fgColorArea.getCurrentColor();
+		fgColorArea.addColorChangeListener(new ColorChangeListener() {
+			
+			@Override
+			public void newColorSelected(IColorProvider source, Color oldColor, Color newColor) {
+				Circle.this.color=newColor;				
+			}
+		});
 	}
 
 	/**

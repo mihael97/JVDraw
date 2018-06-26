@@ -8,6 +8,8 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 
+import hr.fer.zemris.java.hw16.jvdraw.color.ColorChangeListener;
+import hr.fer.zemris.java.hw16.jvdraw.color.IColorProvider;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.editors.FilledCircleEditor;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.editors.GeometricalObjectEditor;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.interfaces.Tool;
@@ -30,15 +32,22 @@ public class FilledCircle extends Circle implements Tool {
 	/**
 	 * Constructor creates new {@link FilledCircle}
 	 * 
-	 * @param color
+	 * @param fgColorArea
 	 *            - color for drawing
-	 * @param colorFill
+	 * @param bgColorArea
 	 *            - color for painting
 	 * 
 	 */
-	public FilledCircle(Color color, Color colorFill) {
-		super(color);
-		this.fillColor = colorFill;
+	public FilledCircle(IColorProvider fgColorArea, IColorProvider bgColorArea) {
+		super(fgColorArea);
+		this.fillColor = bgColorArea.getCurrentColor();
+		bgColorArea.addColorChangeListener(new ColorChangeListener() {
+
+			@Override
+			public void newColorSelected(IColorProvider source, Color oldColor, Color newColor) {
+				FilledCircle.this.fillColor = newColor;
+			}
+		});
 	}
 
 	/**

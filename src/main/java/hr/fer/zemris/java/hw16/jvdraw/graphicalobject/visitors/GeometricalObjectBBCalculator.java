@@ -44,23 +44,23 @@ public class GeometricalObjectBBCalculator implements GeometricalObjectVisitor {
 		Point start = line.getStartPoint();
 		Point end = line.getEndPoint();
 
-		if (start.x < xLeft) {
+		if (start.x < xLeft || xLeft==0) {
 			xLeft = start.x;
-		} else if (start.x > xRight) {
+		} else if (start.x > xRight || xRight==0) {
 			xRight = start.x;
 		}
-		if (end.x < xLeft) {
+		if (end.x < xLeft || xLeft==0) {
 			xLeft = end.x;
-		} else if (end.x > xRight) {
+		} else if (end.x > xRight || xLeft==0) {
 			xRight = end.x;
 		}
 
-		if (start.y < yRight) {
+		if (start.y < yRight || yRight==0) {
 			yRight = start.y;
-		} else if (start.y > yLeft) {
+		} else if (start.y > yLeft || yRight==0) {
 			yLeft = start.y;
 		}
-		if (end.y < yRight) {
+		if (end.y < yRight || yRight==0) {
 			yRight = end.y;
 		} else if (end.y > yLeft) {
 			yLeft = end.y;
@@ -79,23 +79,23 @@ public class GeometricalObjectBBCalculator implements GeometricalObjectVisitor {
 		int radius = (int) circle.getRadius();
 
 		int leftY = center.y + radius;
-		int rightY = center.x - radius;
+		int rightY = center.y - radius;
 		int leftX = center.x - radius;
 		int rightX = center.x + radius;
 
-		if (leftY > yLeft) {
+		if (leftY > yLeft || yLeft==0) {
 			yLeft = leftY;
 		}
 
-		if (leftX < xLeft) {
+		if (leftX < xLeft || xLeft==0) {
 			xLeft = leftX;
 		}
 
-		if (rightX > xRight) {
+		if (rightX > xRight || xRight==0) {
 			xRight = rightX;
 		}
 
-		if (rightY < yRight) {
+		if (rightY < yRight || yRight==0) {
 			yRight = rightY;
 		}
 	}
@@ -107,7 +107,7 @@ public class GeometricalObjectBBCalculator implements GeometricalObjectVisitor {
 	 */
 	@Override
 	public void visit(FilledCircle filledCircle) {
-		visit(filledCircle);
+		visit((Circle) filledCircle);
 	}
 
 	/**
@@ -116,7 +116,13 @@ public class GeometricalObjectBBCalculator implements GeometricalObjectVisitor {
 	 * @return bounding box
 	 */
 	public Rectangle getBoundingBox() {
-		return new Rectangle(xLeft, yRight, xRight, yLeft);
+		int height = yLeft - yRight;
+		int length = xRight - xLeft;
+		System.out.println(xLeft);
+		System.out.println(yLeft);
+		System.out.println(xRight);
+		System.out.println(yRight);
+		return new Rectangle(xLeft, yRight, length, height);
 	}
 
 }
