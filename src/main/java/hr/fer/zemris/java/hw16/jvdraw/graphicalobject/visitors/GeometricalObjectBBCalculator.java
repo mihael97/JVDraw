@@ -44,23 +44,23 @@ public class GeometricalObjectBBCalculator implements GeometricalObjectVisitor {
 		Point start = line.getStartPoint();
 		Point end = line.getEndPoint();
 
-		if (start.x < xLeft || xLeft==0) {
+		if (start.x < xLeft || xLeft == 0) {
 			xLeft = start.x;
-		} else if (start.x > xRight || xRight==0) {
+		} else if (start.x > xRight || xRight == 0) {
 			xRight = start.x;
 		}
-		if (end.x < xLeft || xLeft==0) {
+		if (end.x < xLeft || xLeft == 0) {
 			xLeft = end.x;
-		} else if (end.x > xRight || xLeft==0) {
+		} else if (end.x > xRight || xLeft == 0) {
 			xRight = end.x;
 		}
 
-		if (start.y < yRight || yRight==0) {
+		if (start.y < yRight || yRight == 0) {
 			yRight = start.y;
-		} else if (start.y > yLeft || yRight==0) {
+		} else if (start.y > yLeft || yRight == 0) {
 			yLeft = start.y;
 		}
-		if (end.y < yRight || yRight==0) {
+		if (end.y < yRight || yRight == 0) {
 			yRight = end.y;
 		} else if (end.y > yLeft) {
 			yLeft = end.y;
@@ -83,19 +83,19 @@ public class GeometricalObjectBBCalculator implements GeometricalObjectVisitor {
 		int leftX = center.x - radius;
 		int rightX = center.x + radius;
 
-		if (leftY > yLeft || yLeft==0) {
+		if (leftY > yLeft || yLeft == 0) {
 			yLeft = leftY;
 		}
 
-		if (leftX < xLeft || xLeft==0) {
+		if (leftX < xLeft || xLeft == 0) {
 			xLeft = leftX;
 		}
 
-		if (rightX > xRight || xRight==0) {
+		if (rightX > xRight || xRight == 0) {
 			xRight = rightX;
 		}
 
-		if (rightY < yRight || yRight==0) {
+		if (rightY < yRight || yRight == 0) {
 			yRight = rightY;
 		}
 	}
@@ -118,10 +118,6 @@ public class GeometricalObjectBBCalculator implements GeometricalObjectVisitor {
 	public Rectangle getBoundingBox() {
 		int height = yLeft - yRight;
 		int length = xRight - xLeft;
-		System.out.println(xLeft);
-		System.out.println(yLeft);
-		System.out.println(xRight);
-		System.out.println(yRight);
 		return new Rectangle(xLeft, yRight, length, height);
 	}
 

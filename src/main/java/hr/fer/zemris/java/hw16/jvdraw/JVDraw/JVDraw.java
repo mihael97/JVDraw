@@ -3,6 +3,7 @@ package hr.fer.zemris.java.hw16.jvdraw.JVDraw;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -106,7 +107,7 @@ public class JVDraw extends JFrame {
 			}
 
 		});
-		setTitle("JDraw");
+		setTitle("JVDraw");
 		setLocation(400, 200);
 		setSize(500, 500);
 
@@ -236,10 +237,12 @@ public class JVDraw extends JFrame {
 		JToolBar toolBar = new JToolBar();
 		panel.add(toolBar);
 
-		toolBar.add(new JLabel("Draw:"));
-		toolBar.add(fgColorArea);
-		toolBar.add(new JLabel("Fill:"));
-		toolBar.add(bgColorArea);
+		JPanel color=new JPanel(new FlowLayout(FlowLayout.LEFT));
+		toolBar.add(color);
+		color.add(new JLabel("Draw:"));
+		color.add(fgColorArea);
+		color.add(new JLabel("Fill:"));
+		color.add(bgColorArea);
 		List<AbstractButton> list = makeButtons();
 		group = new ButtonGroup();
 		toolBar.add(new JLabel("Components: "));

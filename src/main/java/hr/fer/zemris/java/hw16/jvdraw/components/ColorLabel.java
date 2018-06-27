@@ -78,6 +78,10 @@ public class ColorLabel extends JLabel implements ColorChangeListener {
 		Color front = foregroundProvider.getCurrentColor();
 		Color back = backgroudProvider.getCurrentColor();
 
+		if (front == null || back == null) {
+			return;
+		}
+
 		super.setText("Foreground color: (" + front.getRed() + ", " + front.getGreen() + ", " + front.getBlue()
 				+ "), Background: (" + back.getRed() + ", " + back.getGreen() + ", " + back.getBlue() + ").");
 
