@@ -7,12 +7,16 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 import hr.fer.zemris.java.hw16.jvdraw.color.ColorChangeListener;
 import hr.fer.zemris.java.hw16.jvdraw.color.IColorProvider;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.GeometricalObject;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.editors.CircleEditor;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.editors.GeometricalObjectEditor;
+import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.interfaces.GeometricalObjectListener;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.interfaces.Tool;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.visitors.GeometricalObjectVisitor;
 
@@ -24,6 +28,11 @@ import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.visitors.GeometricalObject
  *
  */
 public class Circle extends GeometricalObject implements Tool {
+
+	/**
+	 * List of listeners
+	 */
+	private List<GeometricalObjectListener> listeners = new ArrayList<>();
 	/**
 	 * Center circle point
 	 */
@@ -47,10 +56,10 @@ public class Circle extends GeometricalObject implements Tool {
 	public Circle(IColorProvider fgColorArea) {
 		this.color = fgColorArea.getCurrentColor();
 		fgColorArea.addColorChangeListener(new ColorChangeListener() {
-			
+
 			@Override
 			public void newColorSelected(IColorProvider source, Color oldColor, Color newColor) {
-				Circle.this.color=newColor;				
+				Circle.this.color = newColor;
 			}
 		});
 	}
@@ -80,7 +89,12 @@ public class Circle extends GeometricalObject implements Tool {
 	 */
 	@Override
 	public void mousePressed(MouseEvent e) {
-
+		if (center == null) {
+			center = e.getPoint();
+			this.radius = 0;
+		} else {
+			this.radius = calculateRadius(e.getPoint());
+		}
 	}
 
 	/**
@@ -90,6 +104,7 @@ public class Circle extends GeometricalObject implements Tool {
 	 */
 	@Override
 	public void mouseReleased(MouseEvent e) {
+		mouseClicked(e);
 	}
 
 	/**
@@ -110,12 +125,6 @@ public class Circle extends GeometricalObject implements Tool {
 	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if (center == null) {
-			center = e.getPoint();
-			this.radius = 0;
-		} else {
-			this.radius = calculateRadius(e.getPoint());
-		}
 	}
 
 	/**
@@ -137,7 +146,7 @@ public class Circle extends GeometricalObject implements Tool {
 	 */
 	@Override
 	public void mouseDragged(MouseEvent e) {
-
+		mouseMoved(e);
 	}
 
 	/**
@@ -190,6 +199,7 @@ public class Circle extends GeometricalObject implements Tool {
 	 */
 	public void setCenter(Point center) {
 		this.center = center;
+		inform();
 	}
 
 	/**
@@ -209,6 +219,7 @@ public class Circle extends GeometricalObject implements Tool {
 	 */
 	public void setRadius(double radius) {
 		this.radius = radius;
+		inform();
 	}
 
 	/**
@@ -228,6 +239,7 @@ public class Circle extends GeometricalObject implements Tool {
 	 */
 	public void setColor(Color color) {
 		this.color = color;
+		inform();
 	}
 
 	/**
@@ -238,6 +250,33 @@ public class Circle extends GeometricalObject implements Tool {
 	@Override
 	public String toString() {
 		return "Circle (" + center.x + "," + center.y + ")," + (int) radius;
+	}
+
+	/**
+	 * (non-Javadoc)
+	 * 
+	 * @see hr.fer.zemris.java.hw16.jvdraw.graphicalobject.GeometricalObject#addGeometricalObjectListener(hr.fer.zemris.java.hw16.jvdraw.graphicalobject.interfaces.GeometricalObjectListener)
+	 */
+	@Override
+	public void addGeometricalObjectListener(GeometricalObjectListener l) {
+		listeners.add(Objects.requireNonNull(l));
+	}
+
+	/**
+	 * (non-Javadoc)
+	 * 
+	 * @see hr.fer.zemris.java.hw16.jvdraw.graphicalobject.GeometricalObject#removeGeometricalObjectListener(hr.fer.zemris.java.hw16.jvdraw.graphicalobject.interfaces.GeometricalObjectListener)
+	 */
+	@Override
+	public void removeGeometricalObjectListener(GeometricalObjectListener l) {
+		listeners.remove(l);
+	}
+
+	/**
+	 * Method informs every listener that change is made on object
+	 */
+	protected void inform() {
+		listeners.forEach(e -> e.geometricalObjectChanged(this));
 	}
 
 }

@@ -45,6 +45,11 @@ public class JDrawingCanvas extends JComponent implements DrawingModelListener {
 	private boolean firstClick = false;
 
 	/**
+	 * Flag shows if button is pressed
+	 */
+	private boolean isPressed;
+
+	/**
 	 * Constructor
 	 * 
 	 * @param model
@@ -67,50 +72,89 @@ public class JDrawingCanvas extends JComponent implements DrawingModelListener {
 	 */
 	private void addMouseListener() {
 		this.addMouseListener(new MouseAdapter() {
-
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mousePressed(MouseEvent e) {
 				GeometricalObject object = frame.getCurrentState();
 				if (object instanceof Line) {
-					((Line) object).mouseClicked(e);
+					((Line) object).mousePressed(e);
 				} else if (object instanceof Circle) {
-					((Circle) object).mouseClicked(e);
+					((Circle) object).mousePressed(e);
 				} else if (object instanceof FilledCircle) {
-					((FilledCircle) object).mouseClicked(e);
+					((FilledCircle) object).mousePressed(e);
 				}
 
 				if (object != null) {
 					if (!firstClick) {
 						firstClick = true;
+						isPressed = true;
 						repaint();
 					} else {
 						frame.reset();
 						firstClick = false;
 						model.add(object);
-
 					}
 				}
 			}
+
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+				if (firstClick == true && !isPressed) {
+					mousePressed(arg0);
+				}
+
+				if (isPressed) {
+					isPressed = false;
+				}
+			}
+
 		});
 
 		this.addMouseMotionListener(new MouseAdapter() {
 
 			@Override
-			public void mouseMoved(MouseEvent e) {
-
-				GeometricalObject object = frame.getCurrentState();
-				if (object instanceof Line) {
-					((Line) object).mouseMoved(e);
-				} else if (object instanceof Circle) {
-					((Circle) object).mouseMoved(e);
-				} else if (object instanceof FilledCircle) {
-					((FilledCircle) object).mouseMoved(e);
+			public void mouseDragged(MouseEvent e) {
+				if (isPressed) {
+					isPressed = false;
 				}
+				moveMotion(e, false);
+			}
 
-				repaint();
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				moveMotion(e, true);
 			}
 
 		});
+	}
+
+	/**
+	 * Method informs objects about mouse position change
+	 * 
+	 * @param e
+	 *            - mouse event
+	 * @param flag
+	 *            - shows if mouse was dragged on moved
+	 */
+	public void moveMotion(MouseEvent e, boolean flag) {
+		GeometricalObject object = frame.getCurrentState();
+		if (object instanceof Line) {
+			if (flag == true)
+				((Line) object).mouseMoved(e);
+			else
+				((Line) object).mouseDragged(e);
+		} else if (object instanceof Circle) {
+			if (flag == true) {
+				((Circle) object).mouseMoved(e);
+			} else
+				((Circle) object).mouseDragged(e);
+		} else if (object instanceof FilledCircle) {
+			if (flag == true)
+				((FilledCircle) object).mouseMoved(e);
+			else
+				((FilledCircle) object).mouseDragged(e);
+		}
+
+		repaint();
 	}
 
 	/**

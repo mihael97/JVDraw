@@ -1,9 +1,5 @@
 package hr.fer.zemris.java.hw16.jvdraw.graphicalobject;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.editors.GeometricalObjectEditor;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.interfaces.GeometricalObjectListener;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.visitors.GeometricalObjectVisitor;
@@ -16,12 +12,6 @@ import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.visitors.GeometricalObject
  *
  */
 public abstract class GeometricalObject {
-
-	/**
-	 * List of {@link GeometricalObject} listeners
-	 */
-	private List<GeometricalObjectListener> listeners = new ArrayList<>();
-
 	/**
 	 * Method accepts {@link GeometricalObjectVisitor}
 	 * 
@@ -43,16 +33,12 @@ public abstract class GeometricalObject {
 	 * @param l
 	 *            - listener we want to add
 	 */
-	public void addGeometricalObjectListener(GeometricalObjectListener l) {
-		listeners.add(Objects.requireNonNull(l, "Listeners cannot be null!"));
-	}
+	public abstract void addGeometricalObjectListener(GeometricalObjectListener l);
 
 	/**
 	 * Method removes {@link GeometricalObjectListener} from listeners list
 	 * 
 	 * @param l
 	 */
-	public void removeGeometricalObjectListener(GeometricalObjectListener l) {
-		listeners.remove(Objects.requireNonNull(l, "Listeners cannot be null!"));
-	}
+	public abstract void removeGeometricalObjectListener(GeometricalObjectListener l);
 }

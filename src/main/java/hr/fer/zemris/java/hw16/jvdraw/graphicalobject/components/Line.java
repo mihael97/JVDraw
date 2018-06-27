@@ -4,12 +4,16 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 import hr.fer.zemris.java.hw16.jvdraw.color.ColorChangeListener;
 import hr.fer.zemris.java.hw16.jvdraw.color.IColorProvider;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.GeometricalObject;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.editors.GeometricalObjectEditor;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.editors.LineEditor;
+import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.interfaces.GeometricalObjectListener;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.interfaces.Tool;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.visitors.GeometricalObjectVisitor;
 
@@ -20,6 +24,11 @@ import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.visitors.GeometricalObject
  *
  */
 public class Line extends GeometricalObject implements Tool {
+
+	/**
+	 * List of listeners
+	 */
+	private List<GeometricalObjectListener> listeners = new ArrayList<>();
 	/**
 	 * Line's start point
 	 */
@@ -79,7 +88,12 @@ public class Line extends GeometricalObject implements Tool {
 	 */
 	@Override
 	public void mousePressed(MouseEvent e) {
-
+		if (startPoint == null) {
+			startPoint = e.getPoint();
+			endPoint = e.getPoint();
+		} else {
+			endPoint = e.getPoint();
+		}
 	}
 
 	/**
@@ -101,12 +115,7 @@ public class Line extends GeometricalObject implements Tool {
 	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if (startPoint == null) {
-			startPoint = e.getPoint();
-			endPoint = e.getPoint();
-		} else {
-			endPoint = e.getPoint();
-		}
+
 	}
 
 	/**
@@ -126,7 +135,7 @@ public class Line extends GeometricalObject implements Tool {
 	 */
 	@Override
 	public void mouseDragged(MouseEvent e) {
-
+		mouseMoved(e);
 	}
 
 	/**
@@ -179,6 +188,7 @@ public class Line extends GeometricalObject implements Tool {
 	 */
 	public void setStartPoint(Point startPoint) {
 		this.startPoint = startPoint;
+		inform();
 	}
 
 	/**
@@ -198,6 +208,7 @@ public class Line extends GeometricalObject implements Tool {
 	 */
 	public void setEndPoint(Point endPoint) {
 		this.endPoint = endPoint;
+		inform();
 	}
 
 	/**
@@ -217,6 +228,7 @@ public class Line extends GeometricalObject implements Tool {
 	 */
 	public void setColor(Color color) {
 		this.color = color;
+		inform();
 	}
 
 	/**
@@ -227,6 +239,33 @@ public class Line extends GeometricalObject implements Tool {
 	@Override
 	public String toString() {
 		return "Line (" + startPoint.x + "," + startPoint.y + ")-(" + endPoint.x + "," + endPoint.y + ")";
+	}
+
+	/**
+	 * (non-Javadoc)
+	 * 
+	 * @see hr.fer.zemris.java.hw16.jvdraw.graphicalobject.GeometricalObject#addGeometricalObjectListener(hr.fer.zemris.java.hw16.jvdraw.graphicalobject.interfaces.GeometricalObjectListener)
+	 */
+	@Override
+	public void addGeometricalObjectListener(GeometricalObjectListener l) {
+		listeners.add(Objects.requireNonNull(l));
+	}
+
+	/**
+	 * (non-Javadoc)
+	 * 
+	 * @see hr.fer.zemris.java.hw16.jvdraw.graphicalobject.GeometricalObject#removeGeometricalObjectListener(hr.fer.zemris.java.hw16.jvdraw.graphicalobject.interfaces.GeometricalObjectListener)
+	 */
+	@Override
+	public void removeGeometricalObjectListener(GeometricalObjectListener l) {
+		listeners.remove(l);
+	}
+
+	/**
+	 * Method informs every listener that change is made on object
+	 */
+	private void inform() {
+		listeners.forEach(e -> e.geometricalObjectChanged(this));
 	}
 
 }

@@ -6,8 +6,6 @@ import static java.lang.Math.sqrt;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.event.MouseEvent;
-
 import hr.fer.zemris.java.hw16.jvdraw.color.ColorChangeListener;
 import hr.fer.zemris.java.hw16.jvdraw.color.IColorProvider;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.editors.FilledCircleEditor;
@@ -85,21 +83,7 @@ public class FilledCircle extends Circle implements Tool {
 		}
 	}
 
-	/**
-	 * (non-Javadoc)
-	 * 
-	 * @see hr.fer.zemris.java.hw16.jvdraw.graphicalobject.interfaces.Tool#mouseClicked(java.awt.event.MouseEvent)
-	 */
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		if (getCenter() == null) {
-			setCenter(e.getPoint());
-			setRadius(0);
-		} else {
-			setRadius(super.calculateRadius(e.getPoint()));
-		}
 
-	}
 
 	/**
 	 * Method calculates distance between center point and current focused point<br>
@@ -149,6 +133,7 @@ public class FilledCircle extends Circle implements Tool {
 	 */
 	public void setFillColor(Color fillColor) {
 		this.fillColor = fillColor;
+		super.inform();
 	}
 
 	/**
