@@ -6,8 +6,6 @@ import static java.lang.Math.sqrt;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import hr.fer.zemris.java.hw16.jvdraw.color.ColorChangeListener;
-import hr.fer.zemris.java.hw16.jvdraw.color.IColorProvider;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.editors.FilledCircleEditor;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.editors.GeometricalObjectEditor;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.interfaces.Tool;
@@ -30,22 +28,15 @@ public class FilledCircle extends Circle implements Tool {
 	/**
 	 * Constructor creates new {@link FilledCircle}
 	 * 
-	 * @param fgColorArea
+	 * @param drawColor
 	 *            - color for drawing
-	 * @param bgColorArea
+	 * @param fillColor
 	 *            - color for painting
 	 * 
 	 */
-	public FilledCircle(IColorProvider fgColorArea, IColorProvider bgColorArea) {
-		super(fgColorArea);
-		this.fillColor = bgColorArea.getCurrentColor();
-		bgColorArea.addColorChangeListener(new ColorChangeListener() {
-
-			@Override
-			public void newColorSelected(IColorProvider source, Color oldColor, Color newColor) {
-				FilledCircle.this.fillColor = newColor;
-			}
-		});
+	public FilledCircle(Color drawColor, Color fillColor) {
+		super(drawColor);
+		this.fillColor = fillColor;
 	}
 
 	/**
@@ -82,8 +73,6 @@ public class FilledCircle extends Circle implements Tool {
 			super.paint(g2d);
 		}
 	}
-
-
 
 	/**
 	 * Method calculates distance between center point and current focused point<br>

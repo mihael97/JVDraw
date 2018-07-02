@@ -280,18 +280,18 @@ public class JVDraw extends JFrame {
 
 		JToggleButton line = new JToggleButton("Line");
 		line.addActionListener(e -> {
-			currentState = new Line(fgColorArea);
+			currentState = new Line(fgColorArea.getCurrentColor());
 		});
 		list.add(line);
 		JToggleButton circle = new JToggleButton("Circle");
 		circle.addActionListener(e -> {
-			currentState = new Circle(fgColorArea);
+			currentState = new Circle(fgColorArea.getCurrentColor());
 		});
 		list.add(circle);
 
 		JToggleButton filledCircle = new JToggleButton("Filled circle");
 		filledCircle.addActionListener(e -> {
-			currentState = new FilledCircle(fgColorArea, bgColorArea);
+			currentState = new FilledCircle(fgColorArea.getCurrentColor(), bgColorArea.getCurrentColor());
 
 		});
 		list.add(filledCircle);
@@ -314,11 +314,11 @@ public class JVDraw extends JFrame {
 	 */
 	public void reset() {
 		if (currentState instanceof Line) {
-			currentState = new Line(fgColorArea);
+			currentState = new Line(fgColorArea.getCurrentColor());
 		} else if (currentState instanceof Circle && !(currentState instanceof FilledCircle)) {
-			currentState = new Circle(fgColorArea);
+			currentState = new Circle(fgColorArea.getCurrentColor());
 		} else {
-			currentState = new FilledCircle(fgColorArea, bgColorArea);
+			currentState = new FilledCircle(fgColorArea.getCurrentColor(), bgColorArea.getCurrentColor());
 		}
 	}
 
