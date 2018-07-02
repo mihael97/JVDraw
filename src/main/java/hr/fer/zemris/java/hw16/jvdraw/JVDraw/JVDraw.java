@@ -122,7 +122,7 @@ public class JVDraw extends JFrame {
 		fgColorArea = new JColorArea(Color.BLUE);
 		bgColorArea = new JColorArea(Color.RED);
 		this.add(createPanel(fgColorArea, bgColorArea), BorderLayout.PAGE_START);
-		this.add(new ColorLabel(fgColorArea, bgColorArea), BorderLayout.PAGE_END);
+		this.add(new ColorLabel(bgColorArea, fgColorArea), BorderLayout.PAGE_END);
 		this.add(canvas, BorderLayout.CENTER);
 		this.add(new JScrollPane(createList()), BorderLayout.LINE_END);
 	}
@@ -237,7 +237,7 @@ public class JVDraw extends JFrame {
 		JToolBar toolBar = new JToolBar();
 		panel.add(toolBar);
 
-		JPanel color=new JPanel(new FlowLayout(FlowLayout.LEFT));
+		JPanel color = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		toolBar.add(color);
 		color.add(new JLabel("Draw:"));
 		color.add(fgColorArea);
