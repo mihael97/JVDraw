@@ -1,7 +1,10 @@
 package hr.fer.zemris.java.hw16.jvdraw.graphicalobject;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.editors.GeometricalObjectEditor;
-import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.interfaces.GeometricalObjectListener;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.visitors.GeometricalObjectVisitor;
 
 /**
@@ -12,6 +15,11 @@ import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.visitors.GeometricalObject
  *
  */
 public abstract class GeometricalObject {
+	/**
+	 * List of all {@link GeometricalObject} listeners
+	 */
+	private List<GeometricalObjectListener> listeners = new ArrayList<>();
+
 	/**
 	 * Method accepts {@link GeometricalObjectVisitor}
 	 * 
@@ -32,13 +40,28 @@ public abstract class GeometricalObject {
 	 * 
 	 * @param l
 	 *            - listener we want to add
+	 * @throws NullPointerException
+	 *             - if listener is <code>null</code>
 	 */
-	public abstract void addGeometricalObjectListener(GeometricalObjectListener l);
+	public void addGeometricalObjectListener(GeometricalObjectListener l) {
+		listeners.add(Objects.requireNonNull(l));
+	}
 
 	/**
 	 * Method removes {@link GeometricalObjectListener} from listeners list
 	 * 
 	 * @param l
+	 * @throws NullPointerException
+	 *             - if listener is <code>null</code>
 	 */
-	public abstract void removeGeometricalObjectListener(GeometricalObjectListener l);
+	public void removeGeometricalObjectListener(GeometricalObjectListener l) {
+		listeners.remove(Objects.requireNonNull(l));
+	}
+
+	/**
+	 * Method informs every listener that change is made on object
+	 */
+	public void inform() {
+		listeners.forEach(e -> e.geometricalObjectChanged(this));
+	}
 }

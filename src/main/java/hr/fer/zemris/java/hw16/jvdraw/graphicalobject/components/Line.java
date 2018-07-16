@@ -1,18 +1,10 @@
 package hr.fer.zemris.java.hw16.jvdraw.graphicalobject.components;
 
 import java.awt.Color;
-import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.GeometricalObject;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.editors.GeometricalObjectEditor;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.editors.LineEditor;
-import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.interfaces.GeometricalObjectListener;
-import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.interfaces.Tool;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.visitors.GeometricalObjectVisitor;
 
 /**
@@ -21,12 +13,8 @@ import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.visitors.GeometricalObject
  * @author Mihael
  *
  */
-public class Line extends GeometricalObject implements Tool {
+public class Line extends GeometricalObject{
 
-	/**
-	 * List of listeners
-	 */
-	private List<GeometricalObjectListener> listeners = new ArrayList<>();
 	/**
 	 * Line's start point
 	 */
@@ -69,77 +57,6 @@ public class Line extends GeometricalObject implements Tool {
 	 */
 	public Line(Color color) {
 		this.color = color;
-	}
-
-	/**
-	 * (non-Javadoc)
-	 * 
-	 * @see hr.fer.zemris.java.hw16.jvdraw.graphicalobject.interfaces.Tool#mousePressed(
-	 *      java.awt.event.MouseEvent)
-	 */
-	@Override
-	public void mousePressed(MouseEvent e) {
-		if (startPoint == null) {
-			startPoint = e.getPoint();
-			endPoint = e.getPoint();
-		} else {
-			endPoint = e.getPoint();
-		}
-	}
-
-	/**
-	 * (non-Javadoc)
-	 * 
-	 * @see hr.fer.zemris.java.hw16.jvdraw.graphicalobject.interfaces.Tool#mouseReleased(
-	 *      java.awt.event.MouseEvent)
-	 */
-	@Override
-	public void mouseReleased(MouseEvent e) {
-
-	}
-
-	/**
-	 * (non-Javadoc)
-	 * 
-	 * @see hr.fer.zemris.java.hw16.jvdraw.graphicalobject.interfaces.Tool#mouseClicked(
-	 *      java.awt.event.MouseEvent)
-	 */
-	@Override
-	public void mouseClicked(MouseEvent e) {
-
-	}
-
-	/**
-	 * (non-Javadoc)
-	 * 
-	 * @see hr.fer.zemris.java.hw16.jvdraw.graphicalobject.interfaces.Tool#mouseMoved(java.awt.event.MouseEvent)
-	 */
-	@Override
-	public void mouseMoved(MouseEvent e) {
-		endPoint = e.getPoint();
-	}
-
-	/**
-	 * (non-Javadoc)
-	 * 
-	 * @see hr.fer.zemris.java.hw16.jvdraw.graphicalobject.interfaces.Tool#mouseDragged(java.awt.event.MouseEvent)
-	 */
-	@Override
-	public void mouseDragged(MouseEvent e) {
-		mouseMoved(e);
-	}
-
-	/**
-	 * (non-Javadoc)
-	 * 
-	 * @see hr.fer.zemris.java.hw16.jvdraw.graphicalobject.interfaces.Tool#paint(java.awt.Graphics2D)
-	 */
-	@Override
-	public void paint(Graphics2D g2d) {
-		if (startPoint != null) {
-			g2d.setColor(color);
-			g2d.drawLine(startPoint.x, startPoint.y, endPoint.x, endPoint.y);
-		}
 	}
 
 	/**
@@ -231,32 +148,4 @@ public class Line extends GeometricalObject implements Tool {
 	public String toString() {
 		return "Line (" + startPoint.x + "," + startPoint.y + ")-(" + endPoint.x + "," + endPoint.y + ")";
 	}
-
-	/**
-	 * (non-Javadoc)
-	 * 
-	 * @see hr.fer.zemris.java.hw16.jvdraw.graphicalobject.GeometricalObject#addGeometricalObjectListener(hr.fer.zemris.java.hw16.jvdraw.graphicalobject.interfaces.GeometricalObjectListener)
-	 */
-	@Override
-	public void addGeometricalObjectListener(GeometricalObjectListener l) {
-		listeners.add(Objects.requireNonNull(l));
-	}
-
-	/**
-	 * (non-Javadoc)
-	 * 
-	 * @see hr.fer.zemris.java.hw16.jvdraw.graphicalobject.GeometricalObject#removeGeometricalObjectListener(hr.fer.zemris.java.hw16.jvdraw.graphicalobject.interfaces.GeometricalObjectListener)
-	 */
-	@Override
-	public void removeGeometricalObjectListener(GeometricalObjectListener l) {
-		listeners.remove(l);
-	}
-
-	/**
-	 * Method informs every listener that change is made on object
-	 */
-	private void inform() {
-		listeners.forEach(e -> e.geometricalObjectChanged(this));
-	}
-
 }

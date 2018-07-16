@@ -2,6 +2,7 @@ package hr.fer.zemris.java.hw16.jvdraw.graphicalobject.visitors;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.GeometricalObject;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.components.Circle;
@@ -42,7 +43,10 @@ public class GeometricalObjectPainter implements GeometricalObjectVisitor {
 	 */
 	@Override
 	public void visit(Line line) {
-		line.paint(graphics);
+		Point startPoint=line.getStartPoint();
+		Point endPoint=line.getEndPoint();
+		graphics.setColor(line.getColor());
+		graphics.drawLine(startPoint.x, startPoint.y, endPoint.x, endPoint.y);
 	}
 
 	/**
@@ -52,7 +56,10 @@ public class GeometricalObjectPainter implements GeometricalObjectVisitor {
 	 */
 	@Override
 	public void visit(Circle circle) {
-		circle.paint(graphics);
+		double radius=circle.getRadius();
+		Point center=circle.getCenter();
+		graphics.setColor(circle.getColor());
+		graphics.drawOval((int) (center.x - radius), (int) (center.y - radius), (int) (2 * radius), (int) (2 * radius));
 	}
 
 	/**
@@ -62,7 +69,12 @@ public class GeometricalObjectPainter implements GeometricalObjectVisitor {
 	 */
 	@Override
 	public void visit(FilledCircle filledCircle) {
-		filledCircle.paint(graphics);
+		Point center=filledCircle.getCenter();
+		double radius=filledCircle.getRadius();
+		graphics.setColor(filledCircle.getFillColor());
+		graphics.fillOval((int) (center.x - radius), (int) (center.y - radius), (int) (2 * radius), (int) (2 * radius));
+		graphics.setColor((filledCircle.getColor()));
+		graphics.drawOval((int) (center.x - radius), (int) (center.y - radius), (int) (2 * radius), (int) (2 * radius));
 	}
 
 }

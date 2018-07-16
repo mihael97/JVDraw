@@ -1,4 +1,4 @@
-package hr.fer.zemris.java.hw16.jvdraw.graphicalobject.interfaces;
+package hr.fer.zemris.java.hw16.jvdraw.graphicalobject.tool;
 
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;

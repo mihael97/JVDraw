@@ -40,10 +40,11 @@ import hr.fer.zemris.java.hw16.jvdraw.drawing.DrawingObjectListModel;
 import hr.fer.zemris.java.hw16.jvdraw.drawing.JDrawingCanvas;
 import hr.fer.zemris.java.hw16.jvdraw.drawing.interfaces.DrawingModel;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.GeometricalObject;
-import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.components.Circle;
-import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.components.FilledCircle;
-import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.components.Line;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.editors.GeometricalObjectEditor;
+import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.tool.CircleTool;
+import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.tool.FilledCircleTool;
+import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.tool.LineTool;
+import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.tool.Tool;
 import hr.fer.zemris.java.hw16.jvdraw.menuactions.Exit;
 import hr.fer.zemris.java.hw16.jvdraw.menuactions.Export;
 import hr.fer.zemris.java.hw16.jvdraw.menuactions.OpenFile;
@@ -70,7 +71,7 @@ public class JVDraw extends JFrame {
 	/**
 	 * Reference to current drawing object on {@link JDrawingCanvas}
 	 */
-	private GeometricalObject currentState;
+	private Tool currentState;
 
 	/**
 	 * Color provider for drawing color
@@ -280,18 +281,18 @@ public class JVDraw extends JFrame {
 
 		JToggleButton line = new JToggleButton("Line");
 		line.addActionListener(e -> {
-			currentState = new Line(fgColorArea.getCurrentColor());
+			currentState = new LineTool(fgColorArea,model);
 		});
 		list.add(line);
 		JToggleButton circle = new JToggleButton("Circle");
 		circle.addActionListener(e -> {
-			currentState = new Circle(fgColorArea.getCurrentColor());
+			currentState = new CircleTool(fgColorArea,model);
 		});
 		list.add(circle);
 
 		JToggleButton filledCircle = new JToggleButton("Filled circle");
 		filledCircle.addActionListener(e -> {
-			currentState = new FilledCircle(fgColorArea.getCurrentColor(), bgColorArea.getCurrentColor());
+			currentState = new FilledCircleTool(fgColorArea, bgColorArea,model);
 
 		});
 		list.add(filledCircle);
@@ -304,22 +305,8 @@ public class JVDraw extends JFrame {
 	 * 
 	 * @return current active state
 	 */
-	public GeometricalObject getCurrentState() {
+	public Tool getCurrentState() {
 		return currentState;
-	}
-
-	/**
-	 * Method sets current state to <code>null</code><br>
-	 * This method is called when drawing object is finished and stored
-	 */
-	public void reset() {
-		if (currentState instanceof Line) {
-			currentState = new Line(fgColorArea.getCurrentColor());
-		} else if (currentState instanceof Circle && !(currentState instanceof FilledCircle)) {
-			currentState = new Circle(fgColorArea.getCurrentColor());
-		} else {
-			currentState = new FilledCircle(fgColorArea.getCurrentColor(), bgColorArea.getCurrentColor());
-		}
 	}
 
 	/**

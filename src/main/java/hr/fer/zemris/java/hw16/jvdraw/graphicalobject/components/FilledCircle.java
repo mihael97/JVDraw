@@ -1,14 +1,8 @@
 package hr.fer.zemris.java.hw16.jvdraw.graphicalobject.components;
 
-import static java.lang.Math.pow;
-import static java.lang.Math.sqrt;
-
 import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Point;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.editors.FilledCircleEditor;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.editors.GeometricalObjectEditor;
-import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.interfaces.Tool;
 import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.visitors.GeometricalObjectVisitor;
 
 /**
@@ -19,7 +13,7 @@ import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.visitors.GeometricalObject
  * @author Mihael
  *
  */
-public class FilledCircle extends Circle implements Tool {
+public class FilledCircle extends Circle{
 	/**
 	 * Color for fill circle
 	 */
@@ -56,33 +50,6 @@ public class FilledCircle extends Circle implements Tool {
 	public FilledCircle(int x, int y, double rad, Color col, Color colFill) {
 		super(x, y, rad, col);
 		this.fillColor = colFill;
-	}
-
-	/**
-	 * (non-Javadoc)
-	 * 
-	 * @see hr.fer.zemris.java.hw16.jvdraw.graphicalobject.interfaces.Tool#paint(java.awt.Graphics2D)
-	 */
-	@Override
-	public void paint(Graphics2D g2d) {
-		if (getCenter() != null) {
-			g2d.setColor(fillColor);
-			g2d.fillOval((int) (getCenter().x - getRadius()), (int) (getCenter().y - getRadius()),
-					(int) (2 * getRadius()), (int) (2 * getRadius()));
-
-			super.paint(g2d);
-		}
-	}
-
-	/**
-	 * Method calculates distance between center point and current focused point<br>
-	 * 
-	 * @param point
-	 *            - current focused point
-	 * @return distance
-	 */
-	protected double calculateRadius(Point point) {
-		return sqrt(pow(getCenter().x - point.x, 2) + pow(getCenter().y - point.y, 2));
 	}
 
 	/**

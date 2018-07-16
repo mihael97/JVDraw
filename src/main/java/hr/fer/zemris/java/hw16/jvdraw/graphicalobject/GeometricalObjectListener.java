@@ -1,6 +1,4 @@
-package hr.fer.zemris.java.hw16.jvdraw.graphicalobject.interfaces;
-
-import hr.fer.zemris.java.hw16.jvdraw.graphicalobject.GeometricalObject;
+package hr.fer.zemris.java.hw16.jvdraw.graphicalobject;
 
 /**
  * Interface provides method which every {@link GeometricalObjectListener} must
